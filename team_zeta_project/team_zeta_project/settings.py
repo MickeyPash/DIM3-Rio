@@ -31,12 +31,12 @@ ALLOWED_HOSTS = []
 # Application definition
 
 INSTALLED_APPS = (
-    'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'django.contrib.admin',
     'maximatch',
 )
 
@@ -54,9 +54,13 @@ ROOT_URLCONF = 'team_zeta_project.urls'
 WSGI_APPLICATION = 'team_zeta_project.wsgi.application'
 
 SETTINGS_DIR = os.path.dirname(__file__)
+
 PROJECT_PATH = os.path.join(SETTINGS_DIR, os.pardir)
 PROJECT_PATH = os.path.abspath(PROJECT_PATH)
+
 TEMPLATE_PATH = os.path.join(PROJECT_PATH, 'templates')
+
+DATABASE_PATH = os.path.join(PROJECT_PATH, 'maximatch.db')
 
 TEMPLATE_DIRS = (
     # Put strings here, like "/home/html/django_templates" or "C:/www/django/templates".
@@ -75,7 +79,7 @@ MEDIA_ROOT = os.path.join(PROJECT_PATH, 'media') # Absolute path to the media di
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
+        'NAME': DATABASE_PATH,
     }
 }
 
