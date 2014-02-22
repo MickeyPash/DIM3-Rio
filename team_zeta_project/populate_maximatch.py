@@ -3,38 +3,38 @@ import os
 def populate():
 	# Adding a Researcher
 	mickey = add_researcher(name = 'Mickey', 
-							email = 'pashov.m@gmail.com', 
-							password = '123456', 
-							matriculation_id = '1005139')
+				email = 'pashov.m@gmail.com', 
+				password = '123456', 
+				matriculation_id = '1005139')
 
 	# Adding a Participant
 	bruno = add_participant(name = 'Bruno', 
-							email = 'bruno@developer.com', 
-							password = 'coolbeans',
-     						matriculation_id = '2105470', 
-     						nationality = 'BR', 
-     						date_of_birth = '1990-05-22',
-	 						mobile_number = '08457642359', 
-	 						telephone_number = '5555555555', 
-	 						gender = 'M', 
-	 						first_language = 'Portuguese', 
-	 						education_level = 'Bachalor')
+				email = 'bruno@developer.com', 
+				password = 'coolbeans',
+     				matriculation_id = '2105470', 
+     				nationality = 'BR', 
+     				date_of_birth = '1990-05-22',
+	 			mobile_number = '08457642359', 
+	 			telephone_number = '5555555555', 
+	 			gender = 'M', 
+	 			first_language = 'Portuguese', 
+	 			education_level = 'Bachalor')
 
 	# Adding an Experiment
 	test = add_experiment(title = 'Test Experiment', 
-								short_description = 'This is a test experiment.', 
-								description = 'It will be used as a way of populating our database. Don\'t forget that models and the population scrip are tightly coupled',
-     							participants_needed = 20, 
-     							status = 'Closed', 
-     							location = '58 Hillhead Street, Waiting Room',
-      							duration = '24 hours', 
-      							payment_cash = 25.00, 
-      							payment_credit = 2, 
-      							payment_other = 'Ice cream',
-      							start_date = 2014-03-22, 
-      							end_date = 2014-04-01, 
-      							published = , 
-      							researcher = mickey)
+			      short_description = 'This is a test experiment.', 
+			      description = 'It will be used as a way of populating our database. Don\'t forget that models and the population scrip are tightly coupled',
+     			      participants_needed = 20, 
+     			      status = 'Closed', 
+     			      location = '58 Hillhead Street, Waiting Room',
+      			      duration = '24 hours', 
+      			      payment_cash = 25.00, 
+      		              payment_credit = 2, 
+      			      payment_other = 'Ice cream',
+      			      start_date = 2014-03-22, 
+      			      end_date = 2014-04-01, 
+      			      published = , #This is where I have problems see models.py
+      			      researcher = mickey)
 	# Add application
 	app = add_application(participant = bruno, experiment = test, status = 'Email sent')
 
