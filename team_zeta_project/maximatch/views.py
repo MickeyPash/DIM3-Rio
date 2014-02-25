@@ -4,6 +4,8 @@ from django.shortcuts import render_to_response
 from maximatch.models import Experiment
 
 # Create your views here.
+from maximatch.forms import ExperimentForm
+
 
 def index(request):
     # Request the context of the request.
@@ -45,3 +47,30 @@ def experiment(request, experiment_title_url):
 
     # Go render the response and return it to the client.
     return render_to_response('maximatch/experiment.html', context_dict, context)
+
+def add_experiment(request):
+    # Get the context from the request.
+    context = RequestContext(request)
+
+    # A HTTP POST?
+    if request.method == 'POST':
+        form = ExperimentForm(request.POST)
+
+        # Have we been provided with a valid form?
+        if form.is_valid():
+            # Save the new category to the database.
+            form.save(commit=True)
+
+            # Now call the index() view.
+            # The user will be shown the homepage.
+            return index(request)
+        else:
+            # The supplied form contained errors - just print them to the terminal.
+            print form.errors
+    else:
+        # If the request was not a POST, display the form to enter details.
+        form = ExperimentForm()
+
+    # Bad form (or form details), no form supplied...
+    # Render the form with error messages (if any).
+    return render_to_response('maximatch/add_experiment.html', {'form': form}, context)
