@@ -1,9 +1,9 @@
 from django.shortcuts import render
 from django.template import RequestContext
 from django.shortcuts import render_to_response
+from maximatch.models import Experiment
 
 # Create your views here.
-from django.http import HttpResponse
 
 def index(request):
     # Request the context of the request.
@@ -11,8 +11,11 @@ def index(request):
     context = RequestContext(request)
 
     # Construct a dictionary to pass to the template engine as its context.
-    # Note the key boldmessage is the same as {{ boldmessage }} in the template!
-    context_dict = {'boldmessage': "I am bold font from the context"}
+    experiment_list = Experiment.objects.all()
+    context_dict = {'experiments': experiment_list}
+
+    for experiment in experiment_list:
+        experiment.url = experiment.title.replace(' ', '_')
 
     # Return a rendered response to send to the client.
     # We make use of the shortcut function to make our lives easier.
