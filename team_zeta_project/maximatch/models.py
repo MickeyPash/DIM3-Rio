@@ -20,7 +20,7 @@ class Participant(models.Model):
     NATIONALITY_CHOICES = (
         ('GB', 'British'),
 	('BR', 'Brazilian'),
-	('BG', 'Bularian'),
+	('BG', 'Bulgarian'),
         )
     FIRST_LANGUAGE_CHOICES = (
         ('English', 'English'),
@@ -28,7 +28,7 @@ class Participant(models.Model):
     )
     EDUCATION_LEVEL_CHOICES = (
         ('High school', 'High school'),
-	('Bachalor', 'Bachalor'),
+	('Bachelor', 'Bachelor'),
     )
     name = models.CharField(max_length=128)
     email = models.EmailField(blank=False, unique=True)
@@ -67,7 +67,7 @@ class Experiment(models.Model):
     start_date = models.DateField(null=True, blank=False)
     end_date = models.DateField(null=True, blank=False)
     # Having problems populating this field :/ I tried this format 2014-12-22 15:12:13
-    #published = models.DateTimeField(null=True, blank=False)
+    published = models.DateTimeField(null=True, blank=False)
     researcher = models.ForeignKey(Researcher)
 
     def __unicode__(self):
@@ -83,3 +83,6 @@ class Application(models.Model):
     participant = models.ForeignKey(Participant)
     experiment = models.ForeignKey(Experiment)
     status = models.CharField(max_length=25, choices=STATUS_CHOICES)
+
+    def __unicode__(self):
+        return self.participant.name+'-'+self.experiment.short_description
