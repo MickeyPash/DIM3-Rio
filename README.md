@@ -1,7 +1,6 @@
 DIM3-Rio
 ========
-Welcome to the team Zeta - DIM3 wiki!
-![ScreenShot](http://octodex.github.com/images/pythocat.png)
+#Welcome to the team Zeta - DIM3 wiki!
 
 #### Running virtualenv
 `source env/bin/activate`
@@ -28,3 +27,5 @@ Save and restart terminal
 
 #### Run the environment
 `workon [env]`
+
+![ScreenShot](http://octodex.github.com/images/pythocat.png)
