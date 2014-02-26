@@ -1,7 +1,7 @@
 DIM3-Rio
 ========
 Welcome to the team Zeta - DIM3 wiki!
-![ScreenShot](http://octodex.github.com/images/dojocat.jpg)
+![ScreenShot](http://octodex.github.com/images/pythocat.png)
 
 #### Running virtualenv
 `source env/bin/activate`
