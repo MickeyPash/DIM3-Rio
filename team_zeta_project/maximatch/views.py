@@ -6,6 +6,11 @@ from maximatch.models import Experiment
 # Create your views here.
 from maximatch.forms import ExperimentForm
 
+def encode_url(url):
+    return url.replace(' ', '_')
+
+def decode_url(url):
+    return url.replace('_', ' ')
 
 def index(request):
     # Request the context of the request.
@@ -17,7 +22,7 @@ def index(request):
     context_dict = {'experiments': experiment_list}
 
     for experiment in experiment_list:
-        experiment.url = experiment.title.replace(' ', '_')
+        experiment.url = encode_url(experiment.title)
 
     # Return a rendered response to send to the client.
     # We make use of the shortcut function to make our lives easier.
@@ -28,7 +33,7 @@ def experiment(request, experiment_title_url):
     context = RequestContext(request)
 
     # Change underscores in the category name to spaces.
-    experiment_title = experiment_title_url.replace('_', ' ')
+    experiment_title = decode_url(experiment_title_url)
 
     # Create a context dictionary which we can pass to the template rendering engine.
     # We start by containing the name of the category passed by the user.
