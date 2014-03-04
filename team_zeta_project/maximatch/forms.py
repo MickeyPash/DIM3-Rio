@@ -1,5 +1,5 @@
 from django import forms
-from maximatch.models import Experiment, Researcher
+from maximatch.models import Experiment, Researcher, Participant
 from django.contrib.auth.models import User
 
 class ExperimentForm(forms.ModelForm):
@@ -26,7 +26,13 @@ class ExperimentForm(forms.ModelForm):
 class UserForm(forms.ModelForm):
     password = forms.CharField(widget=forms.PasswordInput())
 
-
     class Meta:
         model = User
         fields = ('username', 'first_name', 'email', 'password')
+
+class ParticipantForm(forms.ModelForm):
+    matriculation_id = forms.CharField()
+
+    class Meta:
+        model = Participant
+        fields = ('matriculation_id', 'nationality')
