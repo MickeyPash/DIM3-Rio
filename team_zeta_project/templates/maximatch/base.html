@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+
+<html lang="en">
+    <head>
+        <title>Maxi-Match - {% block title %}Subject Pool{% endblock %}</title>
+    </head>
+
+    <body>
+        <div>
+           <a href="/maximatch">Home</a>
+            {% block body_block %}{% endblock %}
+        </div>
+
+        <hr />
+
+        <div>
+            <ul>
+            {% if user.is_authenticated %}
+                <li><a href="/maximatch/logout/">Logout</a></li>
+                {% if user.is_researcher %}
+                    <li><a href="/maximatch/add_experiment/">Add a New Experiment</a></li>
+                {% endif %}
+            {% else %}
+                <li><a href="/maximatch/register/">Register Here</a></li>
+                <li><a href="/maximatch/login/">Login</a></li>
+            {% endif %}
+            </ul>
+        </div>
+    </body>
+</html>
