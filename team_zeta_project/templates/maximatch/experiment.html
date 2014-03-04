@@ -1,23 +1,19 @@
-<!DOCTYPE html>
-<html>
-    <head>
-        <title>Maxi-Match</title>
-    </head>
+{% extends 'maximatch/base.html' %}
 
-    <body>
-        <h1>{{ experiment_title }}</h1>
-        {% if experiment %}
-            <ul>
-                <li>{{ experiment.title }}</li>
-                <li>{{ experiment.short_description }}</li>
-                <li>{{ experiment.description }}</li>
-                <li>{{ experiment.participants_needed }}</li>
-            </ul>
-        {% else %}
-            The specified experiment {{ experiment_title }} could not be found!
-        {% endif %}
+{% block title %}{{ experiment_title }}{% endblock %}
+
+{% block body_block %}
+    <h1>{{ experiment_title }}</h1>
+    {% if experiment %}
+        <ul>
+            <li>{{ experiment.title }}</li>
+            <li>{{ experiment.short_description }}</li>
+            <li>{{ experiment.description }}</li>
+            <li>{{ experiment.participants_needed }}</li>
+        </ul>
+    {% else %}
+        The specified experiment {{ experiment_title }} could not be found!
+    {% endif %}
 
     <a href="/maximatch">Back to experiment list</a>
-
-    </body>
-</html>
+{% endblock %}

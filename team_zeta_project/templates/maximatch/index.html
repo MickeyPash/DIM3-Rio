@@ -1,30 +1,17 @@
-<!DOCTYPE html>
+{% extends 'maximatch/base.html' %}
 
-{% load static %}
+{% block body_block %}
+    <h1>All experiments</h1>
 
-<html lang="en">
+    {% if experiments %}
 
-    <head>
-        <title>Maxi-Match</title>
-    </head>
+        <ul>
+            {% for experiment in experiments %}
+            <li>{{ experiment.title }} - £{{ experiment.payment_cash }} - <a href="/maximatch/experiment/{{ experiment.url }}">View details</a></li>
+            {% endfor %}
+        </ul>
 
-    <body>
-
-        <h1>All experiments</h1>
-
-        {% if experiments %}
-
-            <ul>
-                {% for experiment in experiments %}
-                <li>{{ experiment.title }} - £{{ experiment.payment_cash }} - <a href="/maximatch/experiment/{{ experiment.url }}">View details</a></li>
-                {% endfor %}
-            </ul>
-
-        {% else %}
-            <strong>Sorry, there are no open experiments at the moment.</strong>
-        {% endif %}
-
-        <a href="/maximatch/add_experiment/">Add a New Experiment</a>
-
-    </body>
-</html>
+    {% else %}
+        <strong>Sorry, there are no open experiments at the moment.</strong>
+    {% endif %}
+{% endblock %}

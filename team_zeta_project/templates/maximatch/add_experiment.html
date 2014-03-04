@@ -1,27 +1,21 @@
-<!DOCTYPE html>
-<html>
-    <head>
-        <title>Maxi-Match</title>
-    </head>
+{% extends 'maximatch/base.html' %}
 
-    <body>
-        <h1>Add a Category</h1>
+{% block title %}{{ experiment_title }}{% endblock %}
+    <h1>Add Experiment</h1>
 
-        <form id="experiment_form" method="post" action="/maximatch/add_experiment/">
+    <form id="experiment_form" method="post" action="/maximatch/add_experiment/">
 
-            {% csrf_token %}
-            {% for hidden in form.hidden_fields %}
-                {{ hidden }}
-            {% endfor %}
+        {% csrf_token %}
+        {% for hidden in form.hidden_fields %}
+            {{ hidden }}
+        {% endfor %}
 
-            {% for field in form.visible_fields %}
-                {{ field.errors }}
-                {{ field.help_text}}
-                {{ field }}<br/>
-            {% endfor %}
+        {% for field in form.visible_fields %}
+            {{ field.errors }}
+            {{ field.help_text}}
+            {{ field }}<br/>
+        {% endfor %}
 
-            <input type="submit" name="submit" value="Create Experiment" />
-        </form>
-    </body>
-
-</html>
+        <input type="submit" name="submit" value="Create Experiment" />
+    </form>
+{% endblock %}
