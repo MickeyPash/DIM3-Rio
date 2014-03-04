@@ -1,5 +1,6 @@
 from django import forms
 from maximatch.models import Experiment, Researcher
+from django.contrib.auth.models import User
 
 class ExperimentForm(forms.ModelForm):
     title = forms.CharField(max_length=128, help_text="Title")
@@ -21,3 +22,11 @@ class ExperimentForm(forms.ModelForm):
     class Meta:
         # Provide an association between the ModelForm and a model
         model = Experiment
+
+class UserForm(forms.ModelForm):
+    password = forms.CharField(widget=forms.PasswordInput())
+
+
+    class Meta:
+        model = User
+        fields = ('username', 'first_name', 'email', 'password')
