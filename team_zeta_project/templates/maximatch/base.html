@@ -1,30 +1,69 @@
+{% load static %}
 <!DOCTYPE html>
-
 <html lang="en">
     <head>
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <!-- Bootstrap -->
+        <link rel="stylesheet" href="{% static "css/bootstrap.min.css" %}" />
+        <link rel="stylesheet" href="{% static "css/main.css" %}" />
+
         <title>Maxi-Match - {% block title %}Subject Pool{% endblock %}</title>
     </head>
 
     <body>
-        <div>
-           <a href="/maximatch">Home</a>
-            {% block body_block %}{% endblock %}
+        <div class="navbar navbar-inverse navbar-fixed-top" role="navigation">
+          <div class="container">
+            <div class="navbar-header">
+                <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+                    <span class="sr-only">Toggle navigation</span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </button>
+                <a class="navbar-brand" href="/maximatch/">Maxi-match</a>
+            </div>
+            <div class="collapse navbar-collapse">
+                <div class="navbar-right">
+                    <ul class="nav navbar-nav">
+                        {% if user.is_authenticated %}
+                            <li><a href="/maximatch/logout/">Logout</a></li>
+                            {% if user.is_researcher %}
+                                <li><a href="/maximatch/add_experiment/">Add a New Experiment</a></li>
+                            {% endif %}
+                        {% else %}
+                            <li><a href="/maximatch/register/">Register</a></li>
+                            <li><a href="/maximatch/login/">Login</a></li>
+                        {% endif %}
+                    </ul>
+                </div>
+               </div>
+           </div>
         </div>
 
-        <hr />
-
-        <div>
-            <ul>
-            {% if user.is_authenticated %}
-                <li><a href="/maximatch/logout/">Logout</a></li>
-                {% if user.is_researcher %}
-                    <li><a href="/maximatch/add_experiment/">Add a New Experiment</a></li>
-                {% endif %}
-            {% else %}
-                <li><a href="/maximatch/register/">Register Here</a></li>
-                <li><a href="/maximatch/login/">Login</a></li>
-            {% endif %}
-            </ul>
+        <div class="container">
+            <div class="row">
+                <!--/span-->
+                <div class="col-xs-12">
+                    {% block body_block %}
+                    {% endblock %}
+                </div>
+                <!--/span-->
+            </div>
+            <!--/row-->
         </div>
+        <!--/.fluid-container-->
+
+        <hr>
+
+        <footer>
+            <div class="container">
+                <p>&copy; Maxi-Match: Subject Pool 2014</p>
+            </div>
+        </footer>
+
+        <!-- JavaScript -->
+        <script src="{% static "js/vendor/jquery-1.10.2.min.js" %}"></script>
+        <script src="{% static "js/vendor/bootstrap.min.js" %}"></script>
+        <script src="{% static "js/main.js" %}"></script>
     </body>
 </html>

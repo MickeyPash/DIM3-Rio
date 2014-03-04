@@ -5,11 +5,14 @@
 
     {% if experiments %}
 
-        <ul>
             {% for experiment in experiments %}
-            <li>{{ experiment.title }} - £{{ experiment.payment_cash }} - <a href="/maximatch/experiment/{{ experiment.url }}">View details</a></li>
-            {% endfor %}
-        </ul>
+                <div class="col-md-4">
+                  <h2>{{ experiment.title }}</h2>
+                  <p>{{ experiment.short_description }}</p>
+                  <p>£{{ experiment.payment_cash }}</p>
+                  <p><a class="btn btn-default" href="/maximatch/experiment/{{ experiment.url }}" role="button">View details &raquo;</a></p>
+                </div>
+            {% endfor %}        
 
     {% else %}
         <strong>Sorry, there are no open experiments at the moment.</strong>

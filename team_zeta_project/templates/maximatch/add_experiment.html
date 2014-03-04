@@ -1,6 +1,8 @@
 {% extends 'maximatch/base.html' %}
 
 {% block title %}{{ experiment_title }}{% endblock %}
+
+{% block body_block %}
     <h1>Add Experiment</h1>
 
     <form id="experiment_form" method="post" action="/maximatch/add_experiment/">
