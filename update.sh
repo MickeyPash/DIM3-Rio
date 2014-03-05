@@ -1,2 +1,2 @@
 #!/bin/bash
-git pull
+cd ~/DIM3-Team-Zeta/team_zeta_project/ && /usr/bin/git pull origin master
