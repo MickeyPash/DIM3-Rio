@@ -23,6 +23,15 @@ class ExperimentForm(forms.ModelForm):
         # Provide an association between the ModelForm and a model
         model = Experiment
 
+class ResearcherForm(forms.ModelForm):
+    matriculation_id = forms.CharField()
+
+    # An inline class to provide additional information on the form.
+    class Meta:
+        # Provide an association between the ModelForm and a model
+        model = Researcher
+
+
 class UserForm(forms.ModelForm):
     password = forms.CharField(widget=forms.PasswordInput())
 

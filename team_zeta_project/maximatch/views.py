@@ -1,7 +1,7 @@
 from django.shortcuts import render
 from django.template import RequestContext
 from django.shortcuts import render_to_response
-from maximatch.models import Experiment
+from maximatch.models import Experiment, Participant, Researcher
 from django.contrib.auth.models import User
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth import logout
@@ -10,7 +10,7 @@ from django.contrib.auth import authenticate, login
 from django.http import HttpResponseRedirect, HttpResponse
 
 # Create your views here.
-from maximatch.forms import ExperimentForm, ParticipantForm, UserForm
+from maximatch.forms import ExperimentForm, ParticipantForm, UserForm, ResearcherForm
 
 def encode_url(url):
     return url.replace(' ', '_')
@@ -103,7 +103,7 @@ def edit_experiment(request, experiment_title_url=None):
 
         # Adds our results list to the template context under name pages.
         context_dict['experiment'] = experiment
-        
+
     except Experiment.DoesNotExist:
         # We get here if we didn't find the specified experiment.
         return render_to_response('maximatch/edit_experiment.html', context_dict, context)
@@ -230,3 +230,107 @@ def user_logout(request):
 
     # Take the user back to the homepage.
     return HttpResponseRedirect('/maximatch/')
+
+@login_required
+def settings(request):
+    context = RequestContext(request)
+
+    user_id = request.user.id
+    updated = False
+
+    context_dict = {'user_id': user_id}
+
+    try:
+        # If we can't find, the .get() method raises a DoesNotExist exception.
+        user = User.objects.get(id=user_id)
+        # Adds our results list to the template context under name pages.
+        context_dict['user'] = user
+
+        try:
+            participant = Participant.objects.get(user=user)
+        except Participant.DoesNotExist:
+            participant = None
+
+        try:
+            researcher = Researcher.objects.get(user=user)
+        except Researcher.DoesNotExist:
+            researcher = None
+
+    except User.DoesNotExist:
+        # We get here if we didn't find the specified experiment.
+        return render_to_response('maximatch/settings.html', context_dict, context)
+
+    if participant is None:
+        # Handling the case that the user is not a participant but a researcher
+        if request.POST:
+            user_form = UserForm(data=request.POST, instance=user)
+            researcher_form = ResearcherForm(data=request.POST, instance=researcher)
+            if user_form.is_valid() and researcher_form.is_valid():
+
+                user = user_form.save()
+
+                user.set_password(user.password)
+                user.save()
+
+                researcher = researcher_form.save(commit=False)
+                researcher.user = user
+
+                researcher.save()
+
+                updated = True
+                
+                context_dict['updated'] = updated
+                context_dict['user_form'] = user_form
+                context_dict['researcher_form'] = researcher_form
+
+                return render_to_response('maximatch/settings.html', context_dict, context)
+
+            else:
+                print user_form.errors, researcher_form.errors
+
+        else:
+            user_form = UserForm(instance=user)
+            researcher_form = ResearcherForm(instance=researcher)
+
+        context_dict['user_form'] = user_form
+        context_dict['researcher_form'] = researcher_form
+        context_dict['updated'] = updated
+
+        return render_to_response('maximatch/settings.html', context_dict, context)
+
+    elif researcher is None:
+        if request.POST:
+            user_form = UserForm(data=request.POST, instance=user)
+            participant_form = ParticipantForm(data=request.POST, instance=participant)
+            if user_form.is_valid() and participant_form.is_valid():
+
+                user = user_form.save()
+
+                user.set_password(user.password)
+                user.save()
+
+                participant = participant_form.save(commit=False)
+                participant.user = user
+
+                participant.save()
+
+                updated = True
+
+                context_dict['updated'] = updated
+                context_dict['user_form'] = user_form
+                context_dict['participant_form'] = participant_form
+
+                return render_to_response('maximatch/settings.html', context_dict, context)
+
+            else:
+                print user_form.errors, participant_form.errors
+
+        else:
+            user_form = UserForm(instance=user)
+            participant_form = ParticipantForm(instance=participant)
+
+        context_dict['user_form'] = user_form
+        context_dict['participant_form'] = participant_form
+        context_dict['updated'] = updated
+
+        return render_to_response('maximatch/settings.html', context_dict, context)
