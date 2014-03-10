@@ -1,0 +1,31 @@
+{% extends 'maximatch/base.html' %}
+
+{% block title %}{{ experiment_title }}{% endblock %}
+
+{% block body_block %}
+    <h1>Edit Experiment</h1>
+
+    {% if experiment %}
+
+        <form id="experiment_form" method="post" action="/maximatch/edit_experiment/{{ experiment.url }}/">
+
+            {% csrf_token %}
+            {% for hidden in form.hidden_fields %}
+                {{ hidden }}
+            {% endfor %}
+
+            {% for field in form.visible_fields %}
+                {{ field.errors }}
+                {{ field.help_text}}
+                {{ field }}<br/>
+            {% endfor %}
+
+            <input type="submit" name="submit" value="Update Experiment" />
+        </form>
+    {% else %}
+        <p>The specified experiment {{ experiment_title }} could not be found!</p>
+
+        <p><a href="/maximatch">Back to experiment list</a></p>
+    {% endif %}
+
+{% endblock %}

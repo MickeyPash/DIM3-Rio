@@ -49,6 +49,8 @@ def experiment(request, experiment_title_url):
         # If we can't find, the .get() method raises a DoesNotExist exception.
         experiment = Experiment.objects.get(title=experiment_title)
 
+        experiment.url = encode_url(experiment.title)
+
         # Adds our results list to the template context under name pages.
         context_dict['experiment'] = experiment
 
@@ -86,6 +88,43 @@ def add_experiment(request):
     # Render the form with error messages (if any).
     return render_to_response('maximatch/add_experiment.html', {'form': form}, context)
 
+@login_required
+def edit_experiment(request, experiment_title_url=None):
+    context = RequestContext(request)
+
+    experiment_title = decode_url(experiment_title_url)
+
+    context_dict = {'experiment_title': experiment_title}
+
+    try:
+        # If we can't find, the .get() method raises a DoesNotExist exception.
+        experiment = Experiment.objects.get(title=experiment_title)
+        experiment.url = encode_url(experiment.title)
+
+        # Adds our results list to the template context under name pages.
+        context_dict['experiment'] = experiment
+        
+    except Experiment.DoesNotExist:
+        # We get here if we didn't find the specified experiment.
+        return render_to_response('maximatch/edit_experiment.html', context_dict, context)
+
+    if request.POST:
+        form = ExperimentForm(request.POST, instance=experiment)
+        if form.is_valid():
+            form.save()
+
+            # If the save was successful, redirect to the details page
+            return HttpResponseRedirect('/maximatch/experiment/' + encode_url(form.cleaned_data['title']))
+
+        else:
+            print form.errors
+
+    else:
+        form = ExperimentForm(instance=experiment)
+
+    context_dict['form'] = form
+
+    return render_to_response('maximatch/edit_experiment.html', context_dict, context)
 
 def register(request):
     context = RequestContext(request)

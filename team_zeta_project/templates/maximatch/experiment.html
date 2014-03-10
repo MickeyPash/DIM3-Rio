@@ -11,9 +11,14 @@
             <li>{{ experiment.description }}</li>
             <li>{{ experiment.participants_needed }}</li>
         </ul>
+
+        {% if user.is_authenticated %}
+            <p><a class="btn btn-default" href="/maximatch/edit_experiment/{{ experiment.url }}" role="button">Edit</a></p>
+        {% endif %}
+
     {% else %}
         The specified experiment {{ experiment_title }} could not be found!
     {% endif %}
 
-    <a href="/maximatch">Back to experiment list</a>
+    <p><a href="/maximatch">Back to experiment list</a></p>
 {% endblock %}
