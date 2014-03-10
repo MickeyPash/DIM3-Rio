@@ -26,6 +26,7 @@
                 <div class="navbar-right">
                     <ul class="nav navbar-nav">
                         {% if user.is_authenticated %}
+                            <li><a href="/maximatch/settings/">{{ user.username }}</a></li>
                             <li><a href="/maximatch/logout/">Logout</a></li>
                             {% if user.is_researcher %}
                                 <li><a href="/maximatch/add_experiment/">Add a New Experiment</a></li>
