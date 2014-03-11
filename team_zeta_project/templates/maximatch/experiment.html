@@ -1,5 +1,7 @@
 {% extends 'maximatch/base.html' %}
 
+{% load maximatch_extras %}
+
 {% block title %}{{ experiment_title }}{% endblock %}
 
 {% block body_block %}
@@ -12,7 +14,7 @@
             <li>{{ experiment.participants_needed }}</li>
         </ul>
 
-        {% if is_researcher %}
+        {% if user.id|is_researcher %}
             <p><a class="btn btn-default" href="/maximatch/edit_experiment/{{ experiment.url }}" role="button">Edit</a></p>
         {% endif %}
 

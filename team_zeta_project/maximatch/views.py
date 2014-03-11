@@ -18,22 +18,6 @@ def encode_url(url):
 def decode_url(url):
     return url.replace('_', ' ')
 
-def is_researcher(user_id=None):
-    try:
-        # If we can't find, the .get() method raises a DoesNotExist exception.
-        user = User.objects.get(id=user_id)
-        # Adds our results list to the template context under name pages.
-
-        try:
-            researcher = Researcher.objects.get(user=user)
-            return True
-        except Researcher.DoesNotExist:
-            return False
-
-    except User.DoesNotExist:
-        # We get here if we didn't find the specified experiment.
-        return False
-
 def index(request):
     # Request the context of the request.
     # The context contains information such as the client's machine details, for example.
@@ -60,7 +44,6 @@ def experiment(request, experiment_title_url):
     # Create a context dictionary which we can pass to the template rendering engine.
     # We start by containing the name of the category passed by the user.
     context_dict = {'experiment_title': experiment_title}
-    context_dict['is_researcher'] = is_researcher(request.user.id)
 
     try:
         # If we can't find, the .get() method raises a DoesNotExist exception.
