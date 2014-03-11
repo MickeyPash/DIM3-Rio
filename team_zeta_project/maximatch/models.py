@@ -76,7 +76,7 @@ class Experiment(models.Model):
 
 class Application(models.Model):
     STATUS_CHOICES = (
-        ('Email sent', 'Email sent'),
+        ('Accepted ', 'Accepted'),
         ('Waiting for confirmation', 'Waiting for confirmation'),
         ('Refused', 'Refused'),
         ('Experiment done', 'Experiment done'),
