@@ -12,7 +12,7 @@
             <li>{{ experiment.participants_needed }}</li>
         </ul>
 
-        {% if user.is_authenticated %}
+        {% if is_researcher %}
             <p><a class="btn btn-default" href="/maximatch/edit_experiment/{{ experiment.url }}" role="button">Edit</a></p>
         {% endif %}
 
