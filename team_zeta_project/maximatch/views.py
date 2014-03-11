@@ -1,7 +1,7 @@
 from django.shortcuts import render
 from django.template import RequestContext
 from django.shortcuts import render_to_response
-from maximatch.models import Experiment, Participant, Researcher
+from maximatch.models import Experiment, Participant, Researcher, Application
 from django.contrib.auth.models import User
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth import logout
@@ -126,6 +126,41 @@ def edit_experiment(request, experiment_title_url=None):
 
     return render_to_response('maximatch/edit_experiment.html', context_dict, context)
 
+def apply_experiment(request, experiment_title_url=None):
+    # Get the context from the request.
+
+    success = False
+    context_dict = {'success': success}
+
+    context = RequestContext(request)
+    user_id = request.user.id
+
+    try:
+        user = User.objects.get(id=user_id)
+        experiment = Experiment.objects.get(title=decode_url(experiment_title_url))
+        participant = Participant.objects.get(user=user)
+    except (Experiment.DoesNotExist, User.DoesNotExist, Participant.DoesNotExist):
+        context_dict['error_message'] = 'Participant or experiment does not exist.'
+        return render_to_response('maximatch/applied_experiment.html', context_dict, context)
+
+    try:
+        application = Application.objects.get(participant=participant, experiment=experiment)
+        context_dict['error_message'] = 'You have already applied to this experiment.'
+        return render_to_response('maximatch/applied_experiment.html', context_dict, context)
+
+    except Application.DoesNotExist:
+        pass
+
+    application = Application(participant=participant, experiment=experiment, status='Waiting for confirmation')
+    application.save()
+
+    success = True
+    context_dict = {'success': success}
+
+    # Bad form (or form details), no form supplied...
+    # Render the form with error messages (if any).
+    return render_to_response('maximatch/applied_experiment.html', context_dict, context)
+
 def register(request):
     context = RequestContext(request)
 
@@ -184,8 +219,6 @@ def register(request):
 def user_login(request):
     # Like before, obtain the context for the user's request.
     context = RequestContext(request)
-
-
 
     # If the request is a HTTP POST, try to pull out the relevant information.
     if request.method == 'POST':

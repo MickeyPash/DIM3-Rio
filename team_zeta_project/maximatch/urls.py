@@ -4,6 +4,7 @@ from maximatch import views
 urlpatterns = patterns('',
         url(r'^$', views.index, name='index'),
         url(r'^add_experiment/$', views.add_experiment, name='add_experiment'),
+        url(r'^apply_experiment/(?P<experiment_title_url>\w+)/$', views.apply_experiment, name='apply_experiment'),
         url(r'^experiment/(?P<experiment_title_url>\w+)/$', views.experiment, name='experiment'),
         url(r'^edit_experiment/(?P<experiment_title_url>\w+)/$', views.edit_experiment, name='edit_experiment'),
         url(r'^settings/$', views.settings, name='register'),
