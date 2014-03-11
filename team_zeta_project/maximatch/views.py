@@ -243,11 +243,12 @@ def user_login(request):
                 return HttpResponseRedirect('/maximatch/')
             else:
                 # An inactive account was used - no logging in!
-                return HttpResponse("Your Maxi-Match account is disabled.")
+                context_dict = { 'error_message': 'Your Maxi-Match account is disabled.'}
+                return render_to_response('maximatch/login.html', context_dict, context)
         else:
             # Bad login details were provided. So we can't log the user in.
-            print "Invalid login details: {0}, {1}".format(username, password)
-            return HttpResponse("Invalid login details supplied.")
+            context_dict = { 'error_message': 'Invalid login details supplied.'}
+            return render_to_response('maximatch/login.html', context_dict, context)
 
     # The request is not a HTTP POST, so display the login form.
     # This scenario would most likely be a HTTP GET.
