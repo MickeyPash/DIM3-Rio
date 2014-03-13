@@ -17,6 +17,19 @@ def encode_url(url):
 def decode_url(url):
     return url.replace('_', ' ')
 
+def is_researcher(user_id=None):
+    try:
+        # If we can't find, the .get() method raises a DoesNotExist exception.
+        user = User.objects.get(id=user_id)
+        try:
+            researcher = Researcher.objects.get(user=user)
+            return True
+        except Researcher.DoesNotExist:
+            pass
+    except:
+        pass
+    return False
+
 def index(request):
     context = RequestContext(request)
 
@@ -27,6 +40,10 @@ def index(request):
         experiment.url = encode_url(experiment.title)
 
     return render_to_response('maximatch/index.html', context_dict, context)
+
+def restricted(request):
+    context = RequestContext(request)
+    return render_to_response('maximatch/restricted.html', {}, context)
 
 def experiment(request, experiment_title_url):
     context = RequestContext(request)
@@ -47,8 +64,12 @@ def experiment(request, experiment_title_url):
 
     return render_to_response('maximatch/experiment.html', context_dict, context)
 
+@login_required
 def add_experiment(request):
     context = RequestContext(request)
+
+    if not is_researcher(request.user.id):
+        return restricted(request)
 
     if request.method == 'POST':
         form = ExperimentForm(request.POST)
@@ -69,6 +90,9 @@ def add_experiment(request):
 @login_required
 def edit_experiment(request, experiment_title_url=None):
     context = RequestContext(request)
+
+    if not is_researcher(request.user.id):
+        return restricted(request)
 
     experiment_title = decode_url(experiment_title_url)
 
@@ -102,6 +126,8 @@ def edit_experiment(request, experiment_title_url=None):
 
     return render_to_response('maximatch/edit_experiment.html', context_dict, context)
 
+
+@login_required
 def apply_experiment(request, experiment_title_url=None):
 
     success = False
@@ -133,6 +159,45 @@ def apply_experiment(request, experiment_title_url=None):
     context_dict = {'success': success}
 
     return render_to_response('maximatch/applied_experiment.html', context_dict, context)
+
+@login_required
+def view_participants(request, experiment_title_url=None):
+    context = RequestContext(request)
+
+    if not is_researcher(request.user.id):
+        return restricted(request)
+
+    experiment_title = decode_url(experiment_title_url)
+
+    context_dict = {'experiment_title': experiment_title}
+
+    try:
+        experiment = Experiment.objects.get(title=experiment_title)
+        experiment.url = encode_url(experiment.title)
+
+        context_dict['experiment'] = experiment
+
+    except Experiment.DoesNotExist:
+        # We get here if we didn't find the specified experiment.
+        return render_to_response('maximatch/edit_experiment.html', context_dict, context)
+
+    if request.POST:
+        form = ExperimentForm(request.POST, instance=experiment)
+        if form.is_valid():
+            form.save()
+
+            # If the save was successful, redirect to the details page
+            return HttpResponseRedirect('/maximatch/experiment/' + encode_url(form.cleaned_data['title']))
+
+        else:
+            print form.errors
+
+    else:
+        form = ExperimentForm(instance=experiment)
+
+    context_dict['form'] = form
+
+    return render_to_response('maximatch/edit_experiment.html', context_dict, context)
 
 def register(request):
     context = RequestContext(request)
@@ -180,7 +245,6 @@ def register(request):
                     },
                     context)
 
-
 def user_login(request):
     context = RequestContext(request)
 
@@ -198,6 +262,7 @@ def user_login(request):
         if user is not None:
             if user.is_active:
                 login(request, user)
+
                 return HttpResponseRedirect('/maximatch/')
 
             else:

@@ -75,6 +75,8 @@ TEMPLATE_DIRS = (
 MEDIA_URL = '/media/'
 MEDIA_ROOT = os.path.join(PROJECT_PATH, 'media') # Absolute path to the media directory
 
+LOGIN_URL = '/maximatch/login'
+
 
 # Database
 # https://docs.djangoproject.com/en/1.6/ref/settings/#databases

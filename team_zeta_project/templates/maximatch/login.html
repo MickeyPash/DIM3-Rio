@@ -4,7 +4,11 @@
 
 <div class="col-md-4 col-md-offset-4">
     <h2>Login to Maxi-Match</h2>
-    <form class="form-signin" id="login_form" method="post" action="/maximatch/login/">
+    {% if next %}
+        <form class="form-signin" id="login_form" method="post" action="/maximatch/login/?next={{next}}">
+    {%else%}
+        <form class="form-signin" id="login_form" method="post" action="/maximatch/login/">
+    {% endif %}
         {% csrf_token %}
 
         {% if error_message %}

@@ -6,7 +6,6 @@ register = template.Library()
 
 @register.filter(name='is_researcher')
 def is_researcher(user_id=None):
-
     try:
         # If we can't find, the .get() method raises a DoesNotExist exception.
         user = User.objects.get(id=user_id)
