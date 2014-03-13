@@ -102,14 +102,22 @@ body {
   padding-top: 50px;
 }
 
-footer p {
-    margin: 0;
-    margin-bottom: 15px;
+html {
+  position: relative;
+  min-height: 100%;
 }
-footer hr {
-    margin-top: 20px;
-    margin-bottom: 15px;
+body {
+  /* Margin bottom by footer height */
+  margin-bottom: 60px;
 }
+#footer {
+  position: absolute;
+  bottom: 0;
+  width: 100%;
+  /* Set the fixed height of the footer here */
+  height: 60px;
+}
+
 
 
 
