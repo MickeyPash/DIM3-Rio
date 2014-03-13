@@ -14,13 +14,10 @@
                 {{ hidden }}
             {% endfor %}
 
-            {% for field in form.visible_fields %}
-                {{ field.errors }}
-                {{ field.help_text}}
-                {{ field }}<br/>
-            {% endfor %}
+            {% load bootstrap3 %}
+            {% bootstrap_form form %}
 
-            <input type="submit" name="submit" value="Update Experiment" />
+            <input type="submit" name="submit" value="Update Experiment" class="btn btn-primary pull-right"/>
         </form>
     {% else %}
         <p>The specified experiment {{ experiment_title }} could not be found!</p>
