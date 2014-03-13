@@ -9,7 +9,7 @@ urlpatterns = patterns('',
     # url(r'^$', 'team_zeta_project.views.home', name='home'),
     # url(r'^blog/', include('blog.urls')),
 
-    url(r'^maximatch/', include('maximatch.urls')), 
+    url(r'^', include('maximatch.urls')), 
     url(r'^admin/', include(admin.site.urls)),
 )
 
