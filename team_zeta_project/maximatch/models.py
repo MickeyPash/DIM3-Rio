@@ -62,7 +62,7 @@ class Experiment(models.Model):
     start_date = models.DateField(null=True, blank=False)
     end_date = models.DateField(null=True, blank=False)
     # Having problems populating this field :/ I tried this format 2014-12-22 15:12:13
-    published = models.DateTimeField(null=True, blank=False)
+    published = models.DateTimeField(null=True, blank=False) # Only used on server side
     researcher = models.ForeignKey(Researcher)
 
     def __unicode__(self):
