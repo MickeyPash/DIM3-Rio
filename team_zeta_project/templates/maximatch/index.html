@@ -1,16 +1,19 @@
 {% extends 'maximatch/base.html' %}
 
 {% block body_block %}
-    <h1>All experiments</h1>
+    <div class="page-header">
+      <h1>All experiments</h1>
+    </div>
 
     {% if experiments %}
 
             {% for experiment in experiments %}
-                <div class="col-md-4">
-                  <h2>{{ experiment.title }}</h2>
+                <div class="col-md-6 well">
+                  <p><h2>{{ experiment.title }}</h2> <span class="pull-right">£{{ experiment.payment_cash }}</span></p>
                   <p>{{ experiment.short_description }}</p>
-                  <p>£{{ experiment.payment_cash }}</p>
-                  <p><a class="btn btn-default" href="/maximatch/experiment/{{ experiment.url }}" role="button">View details &raquo;</a></p>
+                  <br>
+
+                  <p>Duration: {{ experiment.duration }} <a class="btn btn-default pull-right" href="/maximatch/experiment/{{ experiment.url }}" role="button">View details &raquo;</a></p>
                 </div>
             {% endfor %}        
 

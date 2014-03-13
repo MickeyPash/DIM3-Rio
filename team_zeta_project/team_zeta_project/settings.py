@@ -38,6 +38,8 @@ INSTALLED_APPS = (
     'django.contrib.staticfiles',
     'django.contrib.admin',
     'django.contrib.admindocs',
+    'debug_toolbar',
+    'bootstrap3',
     'maximatch',
 )
 

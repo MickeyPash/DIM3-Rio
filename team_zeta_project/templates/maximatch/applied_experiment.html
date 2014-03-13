@@ -1,0 +1,15 @@
+{% extends 'maximatch/base.html' %}
+
+{% block title %}{{ experiment_title }}{% endblock %}
+
+{% block body_block %}
+    <h1>{{ experiment_title }}</h1>
+    {% if success %}
+        <h3>You have successfully applied to this experiment</h3>
+    {% else %}
+    	<h3>An error occurred while trying to apply to the experiment</h3>
+        {{ error_message }}
+    {% endif %}
+
+    <p><a href="/maximatch">Back to experiment list</a></p>
+{% endblock %}

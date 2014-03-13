@@ -4,11 +4,7 @@ from django.contrib.auth.models import User
 # Researcher - Participant - Experiment - Application
 
 class Researcher(models.Model):
-    # the commented lines are now part of the Users model, from the authentication app.
-
-    #name = models.CharField(max_length=128)
-    #email = models.EmailField(blank=False, unique=True)
-    #password = models.CharField(max_length=128, blank=False)
+    # Name, email, first, last name and password fiels are used form User built-in model, from the authentication app.
     matriculation_id = models.CharField(max_length=7)
     user = models.OneToOneField(User)
 
@@ -16,27 +12,25 @@ class Researcher(models.Model):
         return self.user.username
 
 class Participant(models.Model):
+    # Name, email, first, last name and password fiels are used form User built-in model, from the authentication app.
     GENDER_CHOICES = (
         ('M', 'Male'),
         ('F', 'Female'),
-        ('O', 'Other'), # just being politically correct
+        ('O', 'Other'),
     )
     NATIONALITY_CHOICES = (
         ('GB', 'British'),
-	('BR', 'Brazilian'),
-	('BG', 'Bulgarian'),
-        )
+	    ('BR', 'Brazilian'),
+	    ('BG', 'Bulgarian'),
+    )
     FIRST_LANGUAGE_CHOICES = (
         ('English', 'English'),
-	('Portuguese', 'Portuguese'),
+	    ('Portuguese', 'Portuguese'),
     )
     EDUCATION_LEVEL_CHOICES = (
         ('High school', 'High school'),
-	('Bachelor', 'Bachelor'),
+	    ('Bachelor', 'Bachelor'),
     )
-    #name = models.CharField(max_length=128)
-    #email = models.EmailField(blank=False, unique=True)
-    #password = models.CharField(max_length=128, blank=False)
     matriculation_id = models.CharField(max_length=7)
     nationality = models.CharField(max_length=2, choices=NATIONALITY_CHOICES)
     date_of_birth = models.DateField(null=True)
@@ -68,7 +62,7 @@ class Experiment(models.Model):
     start_date = models.DateField(null=True, blank=False)
     end_date = models.DateField(null=True, blank=False)
     # Having problems populating this field :/ I tried this format 2014-12-22 15:12:13
-    published = models.DateTimeField(null=True, blank=False)
+    published = models.DateTimeField(null=True, blank=False) # Only used on server side
     researcher = models.ForeignKey(Researcher)
 
     def __unicode__(self):
@@ -76,7 +70,7 @@ class Experiment(models.Model):
 
 class Application(models.Model):
     STATUS_CHOICES = (
-        ('Email sent', 'Email sent'),
+        ('Accepted ', 'Accepted'),
         ('Waiting for confirmation', 'Waiting for confirmation'),
         ('Refused', 'Refused'),
         ('Experiment done', 'Experiment done'),

@@ -1,4 +1,5 @@
 {% load static %}
+{% load maximatch_extras %}
 <!DOCTYPE html>
 <html lang="en">
     <head>
@@ -16,20 +17,22 @@
             <div class="navbar-header">
                 <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
                     <span class="sr-only">Toggle navigation</span>
-                    <span class="icon-bar"></span>
-                    <span class="icon-bar"></span>
-                    <span class="icon-bar"></span>
                 </button>
                 <a class="navbar-brand" href="/maximatch/">Maxi-match</a>
             </div>
             <div class="collapse navbar-collapse">
+                <div class="navbar-left">
+                    <ul class="nav navbar-nav">
+                        {% if user.id|is_researcher %}
+                                <li><a href="/maximatch/add_experiment/">Add New Experiment</a></li>
+                        {% endif %}
+                    </ul>
+            </div>
                 <div class="navbar-right">
                     <ul class="nav navbar-nav">
                         {% if user.is_authenticated %}
+                            <li><a href="/maximatch/settings/">{{ user.first_name }}</a></li>
                             <li><a href="/maximatch/logout/">Logout</a></li>
-                            {% if user.is_researcher %}
-                                <li><a href="/maximatch/add_experiment/">Add a New Experiment</a></li>
-                            {% endif %}
                         {% else %}
                             <li><a href="/maximatch/register/">Register</a></li>
                             <li><a href="/maximatch/login/">Login</a></li>
@@ -53,15 +56,23 @@
         </div>
         <!--/.fluid-container-->
 
-        <hr>
-
         <footer>
+            <hr>
             <div class="container">
                 <p>&copy; Maxi-Match: Subject Pool 2014</p>
             </div>
         </footer>
 
         <!-- JavaScript -->
+        <script>
+          (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+          (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+          m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+          })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+          ga('create', 'UA-28982190-4', 'pythonanywhere.com');
+          ga('send', 'pageview');
+        </script>
         <script src="{% static "js/vendor/jquery-1.10.2.min.js" %}"></script>
         <script src="{% static "js/vendor/bootstrap.min.js" %}"></script>
         <script src="{% static "js/main.js" %}"></script>

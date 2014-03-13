@@ -12,12 +12,9 @@
             {{ hidden }}
         {% endfor %}
 
-        {% for field in form.visible_fields %}
-            {{ field.errors }}
-            {{ field.help_text}}
-            {{ field }}<br/>
-        {% endfor %}
+        {% load bootstrap3 %}
+        {% bootstrap_form form %}
 
-        <input type="submit" name="submit" value="Create Experiment" />
+        <input type="submit" name="submit" value="Create Experiment"  class="btn btn-primary pull-right"/>
     </form>
 {% endblock %}

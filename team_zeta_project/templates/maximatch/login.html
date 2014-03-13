@@ -2,15 +2,13 @@
 
 {% block body_block %}
 
-<div class="col-xs-4 col-xs-offset-4">
+<div class="col-md-4 col-md-offset-4">
     <h2>Login to Maxi-Match</h2>
     <form class="form-signin" id="login_form" method="post" action="/maximatch/login/">
         {% csrf_token %}
 
-        {% if bad_details %}
-        <p><strong>Your username and/or password were incorrect!</strong></p>
-        {% elif disabled_account %}
-        <p><strong>Your Maximatch account is currently disabled; we can't log you in!</strong></p>
+        {% if error_message %}
+        <p><strong>{{ error_message }}</strong></p>
         {% endif %}
 
         Username: <input type="text" class="input-block-level form-control" placeholder="Username" name="username" value="" size="50" required/>

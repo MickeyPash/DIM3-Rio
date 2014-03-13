@@ -1,0 +1,31 @@
+{% extends 'maximatch/base.html' %}
+
+{% block body_block %}
+
+    <h1>Settings</h1>
+
+    {% if updated %}
+        <p><strong>Settings updated!</strong></p>
+    {% endif %}
+    
+    <form id="user_form" method="post" action="/maximatch/settings/">
+
+        {% csrf_token %}
+
+        {% load bootstrap3 %}
+        
+        {% bootstrap_form user_form %}
+        {% if participant_form %}
+            {% bootstrap_form participant_form %}
+        {% elif researcher_form %}
+            {% bootstrap_form researcher_form %}
+        {% endif %}
+
+        <!-- Provide a button to click to submit the form. -->
+        <input type="submit" name="submit" value="Update" class="btn btn-primary pull-right"/>
+    </form>
+
+    <br />
+    <p><a href="/maximatch/">Return to the experiment list.</a></p>
+
+{% endblock %}

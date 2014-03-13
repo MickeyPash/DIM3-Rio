@@ -3,20 +3,43 @@ import os
 # Definig population script
 def populate():
     #Adding a Researcher
-    user_mickey = add_user(username = 'mick',
-                first_name = 'Mickey',
-				email = 'pashov.m@gmail.com',
-				password = '123456')
+    user_mickey = add_user(username='mick',
+                first_name='Mickey',
+				email='pashov.m@gmail.com',
+				password='123456',
+                is_active=True)
 
-    mickey = add_researcher(matriculation_id = '1005139',
-                user = user_mickey)
+    mickey = add_researcher(matriculation_id='1005139',
+                user=user_mickey)
+
+    #another researcher
+
+    user_goofy = add_user(username='goofy',
+                        first_name='Goofy',
+                        email='goofy@disney.com',
+                        password='12345',
+                        is_active=True)
+
+    goofy = add_researcher(matriculation_id='222558879',
+                           user=user_goofy)
+    #another researcher
+
+    user_don = add_user(username='don',
+                        first_name='Vito Corleone',
+                        email='donvito@littleitaly.com',
+                        password='offer',
+                        is_active=True)
+
+    don = add_researcher(matriculation_id='19720324',
+                         user=user_don)
 
     # Adding a Participant
 
     user_bruno = add_user(username = 'bruno',
             first_name = 'Bruno',
 			email = 'bruno@developer.com',
-			password = 'coolbeans')
+			password = 'coolbeans',
+            is_active=True)
 
     bruno = add_participant(
      		matriculation_id = '2105470',
@@ -28,6 +51,26 @@ def populate():
 	 		first_language = 'Portuguese',
 	 		education_level = 'Bachelor',
             user = user_bruno)
+
+    # another participant
+
+    user_vader = add_user(username='lord_vader',
+                           first_name='Anakin Skywalker',
+                           email='vadder@republic.sith.galaxy',
+                           password='iamyourfather',
+                           is_active=True)
+
+    vadder = add_participant(
+     		matriculation_id = '6631200',
+     		nationality = 'BR',
+     		date_of_birth = '1976-12-21',
+	 		mobile_number = '08457642359',
+	 		telephone_number = '5555555555',
+	 		gender = 'M',
+	 		first_language = 'English',
+	 		education_level = 'Bachelor',
+            user = user_vader)
+
 
     # Adding an Experiment
     test = add_experiment(title = 'Test Experiment',
@@ -44,13 +87,79 @@ def populate():
       		  end_date = '2014-04-01',
       		  published = '2014-02-23 22:15:09',
       		  researcher = mickey)
+
+    # experiment number 2
+
+    experiment2 = add_experiment(title = 'Abnormal Psychology',
+                                 short_description='',
+                                 description=' In this experiment, you will be presented with a series of words in different colours. Your task is to indicate the colour of each word as quickly as possible. There will be a practice block, followed by the actual experiment.',
+                                 participants_needed=12,
+                                 status='Closed',
+                                 location='Lab 6',
+                                 duration='5 minutes',
+                                 payment_cash=0.0,
+                                 payment_credit=0,
+                                 payment_other='none',
+                                 start_date='2014-04-01',
+                                 end_date='2014-04-09',
+                                 published='2014-02-28 10:40:32',
+                                 researcher=mickey)
+
+    experiment3 = add_experiment(title='CANNABIS QUESTIONNAIRE',
+                                 short_description='',
+                                 description='We hold some general information about you but the experimenter of this study requests some additional information. This is because the results of this study might be influenced by specific factors.',
+                                 participants_needed=50,
+                                 status='Closed',
+                                 location='Lab 11',
+                                 duration='10 minutes',
+                                 payment_cash=10.0,
+                                 payment_credit=0,
+                                 payment_other='none',
+                                 start_date='2014-04-02',
+                                 end_date='2014-04-12',
+                                 published='2014-03-15 14:12:23',
+                                 researcher=goofy)
+
+    experiment4 = add_experiment(title='Mental Health Questionnaire',
+                                 short_description='',
+                                 description='This short questionnaire will be regarding your mental health. The information obtained is treated confidentially. Based on the results of the questionnaire, you may be requested to come to the University of Glasgow Psychology department in order to complete short tasks.',
+                                 participants_needed=40,
+                                 status='Closed',
+                                 location='Lab 4',
+                                 duration='15 minutes',
+                                 payment_cash=12.0,
+                                 payment_credit=2,
+                                 payment_other='Ipad',
+                                 start_date='2014-04-02',
+                                 end_date='2014-04-12',
+                                 published='2014-03-15 14:12:23',
+                                 researcher=don)
+
+    experiment5 = add_experiment(title='Trustworthiness of Voices',
+                                 short_description='',
+                                 description='There are two blocks of voices. In each block you will hear a series of 9 voices. For each voice, please rate how trustworthy it sounds, that is, how much you would be ready to trust that person. The whole experiment should take no more than 3 minutes.',
+                                 participants_needed=80,
+                                 status='Closed',
+                                 location='Lab 1',
+                                 duration='3 minutes',
+                                 payment_cash=4.0,
+                                 payment_credit=4,
+                                 payment_other='none',
+                                 start_date='2014-05-22',
+                                 end_date='2014-05-22',
+                                 published='2014-03-11 08:43:58',
+                                 researcher=don)
+
     # Add application
-    app = add_application(participant = bruno, experiment = test, status = 'Email sent')
+    app = add_application(participant = bruno, experiment = test, status = 'Waiting for confirmation')
+
 
 # Defining the add functions for our models
-def add_user(username, first_name, email, password):
+def add_user(username, first_name, email, password, is_active):
 
-    u = User.objects.get_or_create(username = username, first_name = first_name, email = email, password = password)[0]
+    u = User.objects.get_or_create(username = username, first_name = first_name, email = email, password = password, is_active = is_active)[0]
+    u.set_password(password)
+    u.save()
     return u
 
 def add_researcher(matriculation_id, user):
