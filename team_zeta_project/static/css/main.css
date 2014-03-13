@@ -118,6 +118,9 @@ body {
   height: 60px;
 }
 
+.col-md-6.well {
+  height: 200px;
+}
 
 
 
