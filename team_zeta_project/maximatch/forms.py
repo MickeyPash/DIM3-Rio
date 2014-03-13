@@ -5,7 +5,7 @@ from django.contrib.auth.models import User
 class ExperimentForm(forms.ModelForm):
     title = forms.CharField(max_length=128, help_text="Title")
     short_description = forms.CharField(max_length=45, help_text="Short decription")
-    description = forms.CharField(max_length=1024, help_text="Full description")
+    description = forms.CharField(max_length=1024, widget=forms.Textarea, help_text="Full description")
     participants_needed = forms.IntegerField(help_text="Participants needed")
     status = forms.ChoiceField(help_text="Status", choices=Experiment.STATUS_CHOICES)
     location = forms.CharField(max_length=128, help_text="Location")
@@ -18,30 +18,27 @@ class ExperimentForm(forms.ModelForm):
     published = forms.DateTimeField(help_text="Published")
     researcher = forms.ModelChoiceField(help_text="Researcher", queryset=Researcher.objects.all())
 
-    # An inline class to provide additional information on the form.
     class Meta:
-        # Provide an association between the ModelForm and a model
         model = Experiment
 
 class ResearcherForm(forms.ModelForm):
-    matriculation_id = forms.CharField()
-
-    # An inline class to provide additional information on the form.
     class Meta:
-        # Provide an association between the ModelForm and a model
         model = Researcher
-
+        fields = ('matriculation_id',)
 
 class UserForm(forms.ModelForm):
     password = forms.CharField(widget=forms.PasswordInput())
 
     class Meta:
         model = User
-        fields = ('username', 'first_name', 'email', 'password')
+        fields = ('username', 'first_name', 'last_name', 'email', 'password')
 
 class ParticipantForm(forms.ModelForm):
-    matriculation_id = forms.CharField()
-
     class Meta:
         model = Participant
-        fields = ('matriculation_id', 'nationality')
+        fields = ()
+
+class ParticipantFullForm(forms.ModelForm):
+    class Meta:
+        model = Participant
+        fields = ('matriculation_id', 'nationality', 'date_of_birth', 'mobile_number', 'telephone_number', 'gender', 'first_language', 'education_level',)

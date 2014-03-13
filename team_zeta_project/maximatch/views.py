@@ -8,7 +8,7 @@ from django.contrib.auth import logout, authenticate, login
 from django.http import HttpResponseRedirect, HttpResponse
 
 # Create your views here.
-from maximatch.forms import ExperimentForm, ParticipantForm, UserForm, ResearcherForm
+from maximatch.forms import ExperimentForm, ParticipantForm, UserForm, ResearcherForm, ParticipantFullForm
 
 def encode_url(url):
     return url.replace(' ', '_')
@@ -262,10 +262,9 @@ def user_login(request):
 
 @login_required
 def user_logout(request):
-    # Since we know the user is logged in, we can now just log them out.
+
     logout(request)
 
-    # Take the user back to the homepage.
     return HttpResponseRedirect('/maximatch/')
 
 @login_required
@@ -278,9 +277,7 @@ def settings(request):
     context_dict = {'user_id': user_id}
 
     try:
-        # If we can't find, the .get() method raises a DoesNotExist exception.
         user = User.objects.get(id=user_id)
-        # Adds our results list to the template context under name pages.
         context_dict['user'] = user
 
         try:
@@ -294,7 +291,6 @@ def settings(request):
             researcher = None
 
     except User.DoesNotExist:
-        # We get here if we didn't find the specified experiment.
         return render_to_response('maximatch/settings.html', context_dict, context)
 
     if participant is None:
@@ -338,7 +334,7 @@ def settings(request):
     elif researcher is None:
         if request.POST:
             user_form = UserForm(data=request.POST, instance=user)
-            participant_form = ParticipantForm(data=request.POST, instance=participant)
+            participant_form = ParticipantFullForm(data=request.POST, instance=participant)
             if user_form.is_valid() and participant_form.is_valid():
 
                 user = user_form.save()
@@ -364,7 +360,7 @@ def settings(request):
 
         else:
             user_form = UserForm(instance=user)
-            participant_form = ParticipantForm(instance=participant)
+            participant_form = ParticipantFullForm(instance=participant)
 
         context_dict['user_form'] = user_form
         context_dict['participant_form'] = participant_form
