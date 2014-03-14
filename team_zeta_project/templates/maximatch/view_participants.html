@@ -1,0 +1,38 @@
+{% extends 'maximatch/base.html' %}
+
+{% block title %}{{ experiment_title }}{% endblock %}
+
+{% block body_block %}
+
+	{% if not experiment_title %}
+		<h1>{{ error_message }}</h1>
+	{% else %}
+    <h1>View participants: {{ experiment_title }}</h1>
+    
+    <br>
+
+    <table class="table table-condensed">
+      <thead>
+        <tr>
+          <th>#</th>
+          <th>First Name</th>
+          <th>Email</th>
+          <th>Mob. Phone</th>
+          <th>Status</th>
+        </tr>
+      </thead>
+      <tbody>
+      {% for application in applications %}
+        <tr>
+          <td>{{ forloop.counter }}</td>
+          <td>{{ application.participant.user.first_name }}</td>
+          <td>{{ application.participant.user.email }}</td>
+          <td>{{ application.participant.mobile_phone }}</td>
+          <td>{{ application.status }}</td>
+        </tr>
+      {% endfor %}
+    </table>
+    {% endif %}
+    <p><a class="btn btn-default" href="/maximatch/experiment/{{ experiment.url }}" role="button">&laquo; Experiment details</a></p>
+    <p><a href="/maximatch">Experiment list</a></p>
+{% endblock %}

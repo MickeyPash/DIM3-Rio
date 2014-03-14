@@ -19,7 +19,7 @@
             <p><strong>Payment cash: </strong>£{{ experiment.payment_cash }}</p>
             <p><strong>Payment credit: </strong>{{ experiment.payment_credit }} credits</p>
             <p><strong>Payment other: </strong>{{ experiment.payment_other }}</p>
-            <p><strong>Researcher:</strong> {{ experiment.researcher }}</p>
+            <p><strong>Researcher:</strong> {{ experiment.researcher.user.first_name}}</p>
 
             {% if user.id|is_researcher %}
             <p><strong>Participants needed: </strong>{{ experiment.experiment.participants_needed }}</p>
@@ -28,18 +28,25 @@
             <p><strong>End date: </strong>{{ experiment.end_date }}</p>
             {% endif %}
 
-
         {% if user.id|is_researcher %}
-            <p><a class="btn btn-default" href="/maximatch/edit_experiment/{{ experiment.url }}" role="button">Edit</a></p>
-        {% elif user.id %}
+            <a href="/maximatch/view_participants/{{ experiment.url }}" class="no-style"><button type="button" class="btn btn-default">View Participants</button></a>
+            <a href="/maximatch/edit_experiment/{{ experiment.url }}" class="no-style"><button type="button" class="btn btn-default">Edit</button></a>
+        <br><br>
+        {% elif user.id and not applied %}
+
             <p><a class="btn btn-default" href="/maximatch/apply_experiment/{{ experiment.url }}" role="button">Apply</a></p>
+        {% elif user.id and applied %}
+            <p><a class="btn btn-default disabled" role="button">Applied</a></p>
         {% else %}
             <p><a class="btn btn-default disabled" role="button">You must be logged in to apply</a></p>
         {% endif %}
 
     {% else %}
+        <div class="alert alert-danger">
+        <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>    
         The specified experiment {{ experiment_title }} could not be found!
+        </div>
     {% endif %}
 
-    <p><a href="/maximatch">Back to experiment list</a></p>
+    <p><a href="/maximatch">&laquo; Back to experiment list</a></p>
 {% endblock %}

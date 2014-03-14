@@ -30,6 +30,13 @@ def is_researcher(user_id=None):
         pass
     return False
 
+def count_participants(experiment=None):
+    try:
+        num = Application.objects.filter(experiment=experiment).count()
+    except:
+        num = 0
+    return num
+
 def index(request):
     context = RequestContext(request)
 
@@ -38,6 +45,11 @@ def index(request):
 
     for experiment in experiment_list:
         experiment.url = encode_url(experiment.title)
+
+    if is_researcher(request.user.id):
+        context_dict['is_researcher'] = True
+        for experiment in experiment_list:
+            experiment.num_participants = count_participants(experiment)
 
     return render_to_response('maximatch/index.html', context_dict, context)
 
@@ -52,6 +64,8 @@ def experiment(request, experiment_title_url):
 
     context_dict = {'experiment_title': experiment_title}
 
+    applied = False
+
     try:
         experiment = Experiment.objects.get(title=experiment_title)
 
@@ -60,7 +74,19 @@ def experiment(request, experiment_title_url):
         context_dict['experiment'] = experiment
 
     except Experiment.DoesNotExist:
+        experiment = None
         pass
+    if not is_researcher(request.user.id) and experiment:
+        try:
+            user = User.objects.get(id=request.user.id)
+            participant = Participant.objects.get(user=user)
+            application = Application.objects.get(participant=participant, experiment=experiment)
+            applied = True
+        except (Application.DoesNotExist, Participant.DoesNotExist, User.DoesNotExist):
+            applied = False
+
+
+    context_dict['applied'] = applied
 
     return render_to_response('maximatch/experiment.html', context_dict, context)
 
@@ -139,15 +165,18 @@ def apply_experiment(request, experiment_title_url=None):
     try:
         user = User.objects.get(id=user_id)
         experiment = Experiment.objects.get(title=decode_url(experiment_title_url))
+        experiment.url = encode_url(experiment.title)
         participant = Participant.objects.get(user=user)
     except (Experiment.DoesNotExist, User.DoesNotExist, Participant.DoesNotExist):
         context_dict['error_message'] = 'Participant or experiment does not exist.'
-        return render_to_response('maximatch/applied_experiment.html', context_dict, context)
+        return HttpResponseRedirect('/maximatch/experiment/%s/'%experiment.url)
 
     try:
         application = Application.objects.get(participant=participant, experiment=experiment)
         context_dict['error_message'] = 'You have already applied to this experiment.'
-        return render_to_response('maximatch/applied_experiment.html', context_dict, context)
+        context_dict['applied'] = True
+
+        return HttpResponseRedirect('/maximatch/experiment/%s/'%experiment.url)
 
     except Application.DoesNotExist:
         pass
@@ -158,7 +187,7 @@ def apply_experiment(request, experiment_title_url=None):
     success = True
     context_dict = {'success': success}
 
-    return render_to_response('maximatch/applied_experiment.html', context_dict, context)
+    return HttpResponseRedirect('/maximatch/experiment/%s/'%experiment.url)
 
 @login_required
 def view_participants(request, experiment_title_url=None):
@@ -174,12 +203,17 @@ def view_participants(request, experiment_title_url=None):
     try:
         experiment = Experiment.objects.get(title=experiment_title)
         experiment.url = encode_url(experiment.title)
+        applications = Application.objects.filter(experiment=experiment)
 
         context_dict['experiment'] = experiment
+        context_dict['applications'] = applications
 
     except Experiment.DoesNotExist:
         # We get here if we didn't find the specified experiment.
-        return render_to_response('maximatch/edit_experiment.html', context_dict, context)
+        applications = None
+        context_dict['error_message'] = 'Experiment does not exist'
+
+    return render_to_response('maximatch/view_participants.html', context_dict, context)
 
     if request.POST:
         form = ExperimentForm(request.POST, instance=experiment)
@@ -197,7 +231,7 @@ def view_participants(request, experiment_title_url=None):
 
     context_dict['form'] = form
 
-    return render_to_response('maximatch/edit_experiment.html', context_dict, context)
+    return render_to_response('maximatch/view_participants.html', context_dict, context)
 
 def register(request):
     context = RequestContext(request)

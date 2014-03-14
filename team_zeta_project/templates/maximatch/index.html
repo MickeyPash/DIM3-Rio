@@ -14,6 +14,10 @@
                   <br>
 
                   <p>Duration: {{ experiment.duration }} <a class="btn btn-default pull-right" href="/maximatch/experiment/{{ experiment.url }}" role="button">View details &raquo;</a></p>
+                  {% if is_researcher %}
+                  <p>{{ experiment.num_participants }} Participants</p>
+                  {% endif %}
+                  <p></p>
                 </div>
             {% endfor %}        
 
