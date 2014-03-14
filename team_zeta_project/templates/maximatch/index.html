@@ -9,15 +9,25 @@
 
             {% for experiment in experiments %}
                 <div class="col-md-6 well">
-                  <p><h2>{{ experiment.title }}</h2> <span class="pull-right">£{{ experiment.payment_cash }}</span></p>
-                  <p>{{ experiment.short_description }}</p>
+                  <div class="col-md-12"><h2 class="pull-left">{{ experiment.title }}</h2> <span class="pull-right payment-cash">£{{ experiment.payment_cash }}</span></div>
+                  <div class="col-md-12 short-description">{{ experiment.short_description }}</div>
                   <br>
 
-                  <p>Duration: {{ experiment.duration }} <a class="btn btn-default pull-right" href="/maximatch/experiment/{{ experiment.url }}" role="button">View details &raquo;</a></p>
+                  <div class="col-md-6 pull-left">
+                    Duration: {{ experiment.duration }}<br>
+                    {% if is_researcher %}
+                      {{ experiment.num_participants }} Participants
+                    {% endif %}
+                  </div>
+
+                  <div class="col-md-6 pull-right">
+                  <a class="btn btn-default pull-right" href="/maximatch/experiment/{{ experiment.url }}" role="button">View details &raquo;</a>
                   {% if is_researcher %}
-                  <p>{{ experiment.num_participants }} Participants</p>
+                    {% if user.id == experiment.researcher.user.id %}
+                      <a href="/maximatch/edit_experiment/{{ experiment.url }}" class="pull-right"><button type="button" class="btn btn-default">Edit</button></a>
+                    {% endif %}
                   {% endif %}
-                  <p></p>
+                  </div>
                 </div>
             {% endfor %}        
 

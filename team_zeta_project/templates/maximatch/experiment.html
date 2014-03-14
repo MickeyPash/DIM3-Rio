@@ -30,7 +30,9 @@
 
         {% if user.id|is_researcher %}
             <a href="/maximatch/view_participants/{{ experiment.url }}" class="no-style"><button type="button" class="btn btn-default">View Participants</button></a>
+            {% if user.id == experiment.researcher.user.id %}
             <a href="/maximatch/edit_experiment/{{ experiment.url }}" class="no-style"><button type="button" class="btn btn-default">Edit</button></a>
+            {% endif %}
         <br><br>
         {% elif user.id and not applied %}
 
