@@ -1,3 +1,29 @@
+
+$('form[id^="form-application-"] select').change(function () {
+    var button = $(this).parent().parent().find('button');
+    button.css({opacity:1});
+});
+
+$('form[id^="form-application-"]').on('submit', function(event){
+    event.preventDefault();
+    var button = $(this).find('button');
+
+    var url = "/maximatch/update_application_status/"; // the script where you handle the form input.
+
+    $.ajax({
+           type: "POST",
+           url: url,
+           data: $(this).serialize(), // serializes the form's elements.
+           success: function(data)
+           {
+               button.animate({opacity:0});
+                
+           }
+         });
+
+    return false; // avoid to execute the actual submit of the form.
+});
+
 window.goBack = function (e){
     var defaultLocation = "http://brunomperes.pythonanywhere.com";
     var oldHash = window.location.hash;

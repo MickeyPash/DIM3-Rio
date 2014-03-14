@@ -6,9 +6,9 @@ from django.contrib.auth.models import User
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth import logout, authenticate, login
 from django.http import HttpResponseRedirect, HttpResponse
+from maximatch.forms import ExperimentForm, ParticipantForm, UserForm, ResearcherForm, ParticipantFullForm, ApplicationForm
 
 # Create your views here.
-from maximatch.forms import ExperimentForm, ParticipantForm, UserForm, ResearcherForm, ParticipantFullForm
 
 def encode_url(url):
     # Change underscores in the category name to spaces.
@@ -190,6 +190,24 @@ def apply_experiment(request, experiment_title_url=None):
     return HttpResponseRedirect('/maximatch/experiment/%s/'%experiment.url)
 
 @login_required
+def update_application_status(request):
+    context = RequestContext(request)
+    application_id = None
+    response = False
+    if request.method == 'POST':
+        application_id = request.POST['application_id']
+        new_status = request.POST['status']
+
+    if application_id:
+        application = Application.objects.get(id=int(application_id))
+        if application:
+            application.status = new_status
+            application.save()
+            response = True
+
+    return HttpResponse(response)
+
+@login_required
 def view_participants(request, experiment_title_url=None):
     context = RequestContext(request)
 
@@ -207,6 +225,9 @@ def view_participants(request, experiment_title_url=None):
 
         context_dict['experiment'] = experiment
         context_dict['applications'] = applications
+        update_application_form = ApplicationForm()
+        update_application_form.choices = Application.STATUS_CHOICES
+        context_dict['update_application_form'] = update_application_form
 
     except Experiment.DoesNotExist:
         # We get here if we didn't find the specified experiment.

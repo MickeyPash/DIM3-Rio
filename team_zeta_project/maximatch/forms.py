@@ -1,5 +1,5 @@
 from django import forms
-from maximatch.models import Experiment, Researcher, Participant
+from maximatch.models import Experiment, Researcher, Participant, Application
 from django.contrib.auth.models import User
 from django.forms.extras.widgets import SelectDateWidget
 
@@ -27,6 +27,12 @@ class ResearcherForm(forms.ModelForm):
     class Meta:
         model = Researcher
         fields = ('matriculation_id',)
+
+class ApplicationForm(forms.ModelForm):
+    status = Application.STATUS_CHOICES
+    class Meta:
+        model = Application
+        fields = ('status',)
 
 class UserForm(forms.ModelForm):
     password = forms.CharField(widget=forms.PasswordInput())

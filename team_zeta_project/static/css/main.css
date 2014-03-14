@@ -137,6 +137,9 @@ a.no-style:hover, a.no-style:visited, a.no-style:link, a.no-style:active {
   margin-top: 30px;
 }
 
+form[id^="form-application-"] button[type="submit"] {
+  opacity: 0;
+}
 
 
 
