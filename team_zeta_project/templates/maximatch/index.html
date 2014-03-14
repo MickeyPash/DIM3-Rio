@@ -16,7 +16,7 @@
                   <div class="col-md-6 pull-left">
                     Duration: {{ experiment.duration }}<br>
                     {% if is_researcher %}
-                      {{ experiment.num_participants }} Participants
+                      <a href="/maximatch/view_participants/{{ experiment.url }}" class="no-style">{{ experiment.num_participants }}</a> Participants
                     {% endif %}
                   </div>
 
