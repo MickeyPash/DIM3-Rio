@@ -12,7 +12,10 @@
         {% csrf_token %}
 
         {% if error_message %}
-        <p><strong>{{ error_message }}</strong></p>
+        <div class="alert alert-danger">
+        <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>    
+        {{ error_message }}
+        </div>
         {% endif %}
 
         Username: <input type="text" class="input-block-level form-control" placeholder="Username" name="username" value="" size="50" required/>

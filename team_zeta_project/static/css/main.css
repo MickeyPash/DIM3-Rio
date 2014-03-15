@@ -122,9 +122,24 @@ body {
   height: 200px;
 }
 
+a.no-style {
+  
+}
+a.no-style:hover, a.no-style:visited, a.no-style:link, a.no-style:active {
+  text-transform: none !important;
+}
 
+.container .short-description{
+  height: 60px;
+}
 
+.container .payment-cash{
+  margin-top: 30px;
+}
 
+form[id^="form-application-"] button[type="submit"] {
+  opacity: 0;
+}
 
 
 

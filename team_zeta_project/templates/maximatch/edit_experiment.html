@@ -18,11 +18,12 @@
             {% bootstrap_form form %}
 
             <input type="submit" name="submit" value="Update Experiment" class="btn btn-primary pull-right"/>
+            <a href="/maximatch/experiment/{{ experiment.url }}" class="btn btn-small btn-default pull-right">Cancel</a>
         </form>
     {% else %}
         <p>The specified experiment {{ experiment_title }} could not be found!</p>
 
-        <p><a href="/maximatch">Back to experiment list</a></p>
     {% endif %}
+        <p><a href="/maximatch">&laquo; Experiment list</a></p>
 
 {% endblock %}

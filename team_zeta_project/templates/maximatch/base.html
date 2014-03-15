@@ -12,7 +12,7 @@
     </head>
 
     <body>
-        <div class="navbar navbar-inverse navbar-fixed-top" role="navigation">
+        <div class="navbar navbar-default navbar-fixed-top" role="navigation">
           <div class="container">
             <div class="navbar-header">
                 <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
@@ -24,7 +24,7 @@
                 <div class="navbar-left">
                     <ul class="nav navbar-nav">
                         {% if user.id|is_researcher %}
-                                <li><a href="/maximatch/add_experiment/">Add New Experiment</a></li>
+                                <li><a href="/maximatch/add_experiment/">New Experiment</a></li>
                         {% endif %}
                     </ul>
             </div>

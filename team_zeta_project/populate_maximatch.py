@@ -6,7 +6,7 @@ def populate():
     user_mickey = add_user(username='mick',
                 first_name='Mickey',
 				email='pashov.m@gmail.com',
-				password='123456',
+				password='1234',
                 is_active=True)
 
     mickey = add_researcher(matriculation_id='1005139',
@@ -17,7 +17,7 @@ def populate():
     user_goofy = add_user(username='goofy',
                         first_name='Goofy',
                         email='goofy@disney.com',
-                        password='12345',
+                        password='1234',
                         is_active=True)
 
     goofy = add_researcher(matriculation_id='222558879',
@@ -27,7 +27,7 @@ def populate():
     user_don = add_user(username='don',
                         first_name='Vito Corleone',
                         email='donvito@littleitaly.com',
-                        password='offer',
+                        password='1234',
                         is_active=True)
 
     don = add_researcher(matriculation_id='19720324',
@@ -38,7 +38,7 @@ def populate():
     user_bruno = add_user(username = 'bruno',
             first_name = 'Bruno',
 			email = 'bruno@developer.com',
-			password = 'coolbeans',
+			password = '1234',
             is_active=True)
 
     bruno = add_participant(
@@ -57,7 +57,7 @@ def populate():
     user_vader = add_user(username='lord_vader',
                            first_name='Anakin Skywalker',
                            email='vadder@republic.sith.galaxy',
-                           password='iamyourfather',
+                           password='1234',
                            is_active=True)
 
     vadder = add_participant(

@@ -5,7 +5,11 @@
     <h1>Settings</h1>
 
     {% if updated %}
-        <p><strong>Settings updated!</strong></p>
+        <div class="alert alert-success">
+        <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>    
+        {{ error_message }}
+        <strong>Settings updated!</strong>
+        </div>
     {% endif %}
     
     <form id="user_form" method="post" action="/maximatch/settings/">
@@ -26,6 +30,6 @@
     </form>
 
     <br />
-    <p><a href="/maximatch/">Return to the experiment list.</a></p>
+    <p><a href="/maximatch">&laquo; Experiment list</a></p>
 
 {% endblock %}

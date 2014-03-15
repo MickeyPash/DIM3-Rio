@@ -66,7 +66,7 @@ class Experiment(models.Model):
     researcher = models.ForeignKey(Researcher)
 
     def __unicode__(self):
-        return self.short_description
+        return self.title
 
 class Application(models.Model):
     STATUS_CHOICES = (
@@ -80,4 +80,4 @@ class Application(models.Model):
     status = models.CharField(max_length=25, choices=STATUS_CHOICES)
 
     def __unicode__(self):
-        return self.participant.user.username+'-'+self.experiment.short_description
+        return '\"' + self.participant.user.username + '\"' +' applied for \"'+self.experiment.short_description + '\"'
