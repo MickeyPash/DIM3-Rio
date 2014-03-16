@@ -8,10 +8,10 @@
 
     {% if registered %}
         <strong>Thank you for registering!</strong>
-        <a href="/maximatch/">Return to the homepage.</a><br />
+        <a href="/">Return to the homepage.</a><br />
     {% else %}
 
-        <form id="user_form" method="post" action="/maximatch/register/" class="form col-md-5 col-md-offset-3">
+        <form id="user_form" method="post" action="/register/" class="form col-md-5 col-md-offset-3">
 
             {% csrf_token %}
             {% load bootstrap3 %}

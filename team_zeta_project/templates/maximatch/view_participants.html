@@ -29,7 +29,7 @@
           <td>{{ application.participant.user.email }}</td>
           <td>{{ application.participant.mobile_phone }}</td>
           <td>
-            <form id="form-application-{{ application.id }}" class="" method="post" action="/maximatch/update_application_status/">
+            <form id="form-application-{{ application.id }}" class="" method="post" action="/update_application_status/">
               {% csrf_token %}
               <div class="col-xs-6">
                 <select class="form-control" name="status">
@@ -47,6 +47,6 @@
     </table>
     {% endif %}
 
-    <p><a class="btn btn-default" href="/maximatch/experiment/{{ experiment.url }}" role="button">&laquo; Experiment details</a></p>
-    <p><a href="/maximatch">&laquo; Experiment list</a></p>
+    <p><a class="btn btn-default" href="/experiment/{{ experiment.url }}" role="button">&laquo; Experiment details</a></p>
+    <p><a href="">&laquo; Experiment list</a></p>
 {% endblock %}

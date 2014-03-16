@@ -12,7 +12,7 @@
         </div>
     {% endif %}
     
-    <form id="user_form" method="post" action="/maximatch/settings/">
+    <form id="user_form" method="post" action="/settings/">
 
         {% csrf_token %}
 
@@ -30,6 +30,6 @@
     </form>
 
     <br />
-    <p><a href="/maximatch">&laquo; Experiment list</a></p>
+    <p><a href="/">&laquo; Experiment list</a></p>
 
 {% endblock %}

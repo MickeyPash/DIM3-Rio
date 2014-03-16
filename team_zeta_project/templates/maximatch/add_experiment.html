@@ -5,7 +5,7 @@
 {% block body_block %}
     <h1>Add Experiment</h1>
 
-    <form id="experiment_form" method="post" action="/maximatch/add_experiment/">
+    <form id="experiment_form" method="post" action="/add_experiment/">
 
         {% csrf_token %}
         {% for hidden in form.hidden_fields %}
@@ -17,5 +17,5 @@
 
         <input type="submit" name="submit" value="Create Experiment"  class="btn btn-primary pull-right"/>
     </form>
-    <p><a href="/maximatch">&laquo; Experiment list</a></p>
+    <p><a href="/">&laquo; Experiment list</a></p>
 {% endblock %}
