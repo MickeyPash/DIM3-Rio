@@ -49,9 +49,9 @@ class Experiment(models.Model):
         ('Closed', 'Closed'),
         ('Open to applicants', 'Open to applicants'),
     )
-    title = models.CharField(max_length=128, blank=False)
-    short_description = models.CharField(max_length=45, blank=False)
-    description = models.CharField(max_length=1024)
+    title = models.TextField(max_length=45, blank=False)
+    short_description = models.TextField(max_length=256, blank=False)
+    description = models.TextField(max_length=1024)
     participants_needed = models.IntegerField()
     status = models.CharField(max_length=45, choices=STATUS_CHOICES)
     location = models.CharField(max_length=128)
@@ -61,8 +61,7 @@ class Experiment(models.Model):
     payment_other = models.CharField(max_length=128)
     start_date = models.DateField(null=True, blank=False)
     end_date = models.DateField(null=True, blank=False)
-    # Having problems populating this field :/ I tried this format 2014-12-22 15:12:13
-    published = models.DateTimeField(null=True, blank=False) # Only used on server side
+    published = models.DateTimeField(null=True, blank=False)
     researcher = models.ForeignKey(Researcher)
 
     def __unicode__(self):

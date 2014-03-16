@@ -1,13 +1,9 @@
 import os
 
-# Definig population script
-def populate():
-    #Adding a Researcher
-    user_mickey = add_user(username='mick',
-                first_name='Mickey',
-				email='pashov.m@gmail.com',
-				password='1234',
-                is_active=True)
+# Definig population script def populate():     #Adding a Researcher
+user_mickey = add_user(username='mick',                 first_name='Mickey',
+email='pashov.m@gmail.com',                 password='1234',
+is_active=True)
 
     mickey = add_researcher(matriculation_id='1005139',
                 user=user_mickey)
