@@ -18,7 +18,7 @@ Alternative:
 
 #### Open your .bashrc file with your favourite editor
 `nano ~/.bashrc` And add this line to the end of it:
-`/usr/local/bin/virtualenvwrapper.sh`
+`source /usr/local/bin/virtualenvwrapper.sh`
 Save and restart terminal
 
 #### List your virtual environments
