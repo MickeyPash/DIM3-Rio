@@ -5,10 +5,10 @@ from django.forms.extras.widgets import SelectDateWidget
 
 
 class ExperimentForm(forms.ModelForm):
-    title = forms.CharField(max_length=128)
-    short_description = forms.CharField(max_length=45)
+    title = forms.CharField(max_length=70)
     description = forms.CharField(max_length=1024, widget=forms.Textarea)
     participants_needed = forms.IntegerField()
+    short_description = forms.CharField(max_length=145)
     status = forms.ChoiceField(choices=Experiment.STATUS_CHOICES)
     location = forms.CharField(max_length=128)
     duration = forms.CharField(max_length=20)

@@ -45,16 +45,16 @@ def count_participants(experiment=None):
 def index(request):
     context = RequestContext(request)
 
-    experiment_list = Experiment.objects.all()
+    experiment_list = Experiment.objects.filter(status='Open to applicants',)
     context_dict = {'experiments': experiment_list}
 
-    for experiment in experiment_list:
-        experiment.url = encode_url(experiment.title)
+    if experiment_list:
+        for experiment in experiment_list:
+            experiment.url = encode_url(experiment.title)
+            experiment.num_participants = count_participants(experiment)
 
     if is_researcher(request.user.id):
         context_dict['is_researcher'] = True
-        for experiment in experiment_list:
-            experiment.num_participants = count_participants(experiment)
 
     return render_to_response('maximatch/index.html', context_dict, context)
 
@@ -77,6 +77,7 @@ def experiment(request, experiment_title_url):
         experiment = Experiment.objects.get(title=experiment_title)
 
         experiment.url = encode_url(experiment.title)
+        experiment.num_participants = count_participants(experiment)
 
         context_dict['experiment'] = experiment
 

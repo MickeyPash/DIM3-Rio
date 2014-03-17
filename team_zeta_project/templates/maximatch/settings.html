@@ -1,35 +1,43 @@
 {% extends 'maximatch/base.html' %}
 
+{% block title %}Settings{% endblock %}
+
 {% block body_block %}
 
     <h1>Settings</h1>
 
-    {% if updated %}
-        <div class="alert alert-success">
-        <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>    
-        {{ error_message }}
-        <strong>Settings updated!</strong>
-        </div>
-    {% endif %}
-    
-    <form id="user_form" method="post" action="/maximatch/settings/">
-
-        {% csrf_token %}
-
-        {% load bootstrap3 %}
-        
-        {% bootstrap_form user_form %}
-        {% if participant_form %}
-            {% bootstrap_form participant_form %}
-        {% elif researcher_form %}
-            {% bootstrap_form researcher_form %}
+    <div class="col-md-6 col-md-offset-3">
+        {% if updated %}
+            <div class="alert alert-success">
+            <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>    
+            {{ error_message }}
+            <strong>Settings updated!</strong>
+            </div>
         {% endif %}
+        
+        <form id="user_form" method="post" action="/maximatch/settings/">
 
-        <!-- Provide a button to click to submit the form. -->
-        <input type="submit" name="submit" value="Update" class="btn btn-primary pull-right"/>
-    </form>
+            {% csrf_token %}
+
+            {% load bootstrap3 %}
+            
+            {% bootstrap_form user_form %}
+            {% if participant_form %}
+                {% bootstrap_form participant_form %}
+            {% elif researcher_form %}
+                {% bootstrap_form researcher_form %}
+            {% endif %}
+
+            <!-- Provide a button to click to submit the form. -->
+            <input type="submit" name="submit" value="Update" class="btn btn-primary pull-right"/>
+        </form>
+    </div>
 
     <br />
-    <p><a href="/maximatch">&laquo; Experiment list</a></p>
+    <div class="row">
+        <div class="col-md-12">
+            <p><a href="/maximatch">&laquo; Experiment list</a></p>
+        </div>
+    </div>
 
 {% endblock %}

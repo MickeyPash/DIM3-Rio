@@ -130,7 +130,11 @@ a.no-style:hover, a.no-style:visited, a.no-style:link, a.no-style:active {
 }
 
 .container .short-description{
-  height: 60px;
+  line-height: 85px;
+  min-height: 85px;
+}
+.container h2{
+  margin-top: 0;
 }
 
 .container .payment-cash{
@@ -139,6 +143,25 @@ a.no-style:hover, a.no-style:visited, a.no-style:link, a.no-style:active {
 
 form[id^="form-application-"] button[type="submit"] {
   opacity: 0;
+}
+
+body{
+  font-size: 115%;
+}
+.btn, a.btn{
+  font-size: 70%;
+}
+
+div.navbar-inverse {
+  background-color: #32668b;
+}
+
+.navbar-inverse .navbar-brand:hover, .navbar-inverse .navbar-brand:focus, .navbar-inverse:hover .navbar-nav>li>a:hover,
+.navbar-inverse:focus .navbar-nav>li>a:focus{
+  color: #999999 !important;
+}
+.navbar-inverse .navbar-brand, .navbar-inverse .navbar-brand, .navbar-inverse .navbar-nav>li>a{
+  color: #ffffff !important;
 }
 
 

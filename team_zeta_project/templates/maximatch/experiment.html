@@ -5,50 +5,63 @@
 {% block title %}{{ experiment_title }}{% endblock %}
 
 {% block body_block %}
-    
+
     <div class="page-header">
       <h1>{{ experiment_title }}</h1>
     </div>
 
-    {% if experiment %}
-            <p><strong>Short description: </strong>{{ experiment.short_description }}</p>
-            <p><strong>Description: </strong>{{ experiment.description }}</p>
-            <p><strong>Status: </strong>{{ experiment.status }}</p>
-            <p><strong>Location: </strong>{{ experiment.location }}</p>
-            <p><strong>Duration: </strong>{{ experiment.duration }}</p>
-            <p><strong>Payment cash: </strong>£{{ experiment.payment_cash }}</p>
-            <p><strong>Payment credit: </strong>{{ experiment.payment_credit }} credits</p>
-            <p><strong>Payment other: </strong>{{ experiment.payment_other }}</p>
-            <p><strong>Researcher:</strong> {{ experiment.researcher.user.first_name}}</p>
+    <div class="col-md-12">
+        {% if experiment %}
+                <div class="row">
+                    <div class="col-md-6">
+                        <span class="glyphicon glyphicon-time" title="Duration"></span> {{ experiment.duration }}
+                        <span class="glyphicon glyphicon-gbp" title="Payment"></span> {{ experiment.payment_cash }}
+                        {% if user.id|is_researcher %}
+                        <span class="glyphicon glyphicon-pushpin" title="Status"></span> {{ experiment.status }}
+                        {% endif %}
+                        <span class="glyphicon glyphicon-user" title="Participants"></span> {{ experiment.num_participants }} / {{ experiment.participants_needed }}
+                    </div>
+                </div>
+                <br>
+                <p><strong>Location: </strong>
+                    {{ experiment.location }} - <a href="http://maps.google.com/maps?q={{ experiment.location }}" target="_blank">View Map</a>
+                </p>
+                <p><strong>Exeperiment description:</strong><br>
+                {{ experiment.description }}</p>
+                <strong>Researcher:</strong> {{ experiment.researcher.user.first_name }} {{ experiment.researcher.user.last_name }} - ({{ experiment.researcher.user.email }}) </p>
+
+                {% if user.id|is_researcher %}
+                <p><strong>Researcher:</strong> {{ experiment.researcher.user.first_name }} {{ experiment.researcher.user.last_name }}</p>
+                <p><strong>Published on: </strong>{{ experiment.published }}</p>
+                <p><strong>Start date: </strong>{{ experiment.start_date }}</p>
+                <p><strong>End date: </strong>{{ experiment.end_date }}</p>
+                {% endif %}
 
             {% if user.id|is_researcher %}
-            <p><strong>Participants needed: </strong>{{ experiment.experiment.participants_needed }}</p>
-            <p><strong>Published on: </strong>{{ experiment.published }}</p>
-            <p><strong>Start date: </strong>{{ experiment.start_date }}</p>
-            <p><strong>End date: </strong>{{ experiment.end_date }}</p>
+                <a href="/view_participants/{{ experiment.url }}" class="no-style">
+                    <button type="button" class="btn btn-default">View Participants</button>
+                </a>
+                {% if user.id == experiment.researcher.user.id %}
+                <a href="/edit_experiment/{{ experiment.url }}" class="no-style">
+                    <button type="button" class="btn btn-default">Edit</button>
+                </a>
+                {% endif %}
+            <br><br>
+            {% elif user.id and not applied %}
+                <p><a class="btn btn-default" href="/apply_experiment/{{ experiment.url }}" role="button">Apply</a></p>
+            {% elif user.id and applied %}
+                <p><a class="btn btn-default disabled" role="button">Applied</a></p>
+            {% else %}
+                <p><a class="btn btn-default disabled" role="button">You must be logged in to apply</a></p>
             {% endif %}
 
-        {% if user.id|is_researcher %}
-            <a href="/maximatch/view_participants/{{ experiment.url }}" class="no-style"><button type="button" class="btn btn-default">View Participants</button></a>
-            {% if user.id == experiment.researcher.user.id %}
-            <a href="/maximatch/edit_experiment/{{ experiment.url }}" class="no-style"><button type="button" class="btn btn-default">Edit</button></a>
-            {% endif %}
-        <br><br>
-        {% elif user.id and not applied %}
-
-            <p><a class="btn btn-default" href="/maximatch/apply_experiment/{{ experiment.url }}" role="button">Apply</a></p>
-        {% elif user.id and applied %}
-            <p><a class="btn btn-default disabled" role="button">Applied</a></p>
         {% else %}
-            <p><a class="btn btn-default disabled" role="button">You must be logged in to apply</a></p>
+            <div class="alert alert-danger">
+            <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>    
+            The specified experiment {{ experiment_title }} could not be found!
+            </div>
         {% endif %}
+    </div>
 
-    {% else %}
-        <div class="alert alert-danger">
-        <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>    
-        The specified experiment {{ experiment_title }} could not be found!
-        </div>
-    {% endif %}
-
-    <p><a href="/maximatch">&laquo; Experiment list</a></p>
+    <p><a href="/">&laquo; Experiment list</a></p>
 {% endblock %}

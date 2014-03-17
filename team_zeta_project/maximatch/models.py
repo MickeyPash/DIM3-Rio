@@ -56,8 +56,8 @@ class Experiment(models.Model):
         ('Closed', 'Closed'),
         ('Open to applicants', 'Open to applicants'),
     )
-    title = models.CharField(max_length=128, blank=False)
-    short_description = models.CharField(max_length=45, blank=False)
+    title = models.CharField(max_length=70, blank=False)
+    short_description = models.CharField(max_length=145, blank=False)
     description = models.CharField(max_length=1024)
     participants_needed = models.IntegerField()
     status = models.CharField(max_length=45, choices=STATUS_CHOICES)

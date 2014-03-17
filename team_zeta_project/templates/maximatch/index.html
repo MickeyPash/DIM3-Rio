@@ -1,5 +1,7 @@
 {% extends 'maximatch/base.html' %}
 
+{% block title %}Experiments{% endblock %}
+
 {% block body_block %}
     <div class="page-header">
       <h1>All experiments</h1>
@@ -8,27 +10,31 @@
     {% if experiments %}
 
             {% for experiment in experiments %}
-                <div class="col-md-6 well">
-                  <div class="col-md-12"><h2 class="pull-left">{{ experiment.title }}</h2> <span class="pull-right payment-cash">£{{ experiment.payment_cash }}</span></div>
+              <div class="col-md-6 well">
+                <div class="row">
+                  <div class="col-md-12"><h2 class="pull-left">{{ experiment.title }}</h2></div>
+                </div>
+                <div class="row">
                   <div class="col-md-12 short-description">{{ experiment.short_description }}</div>
-                  <br>
-
-                  <div class="col-md-6 pull-left">
-                    Duration: {{ experiment.duration }}<br>
-                    {% if is_researcher %}
-                      <a href="/maximatch/view_participants/{{ experiment.url }}" class="no-style">{{ experiment.num_participants }}</a> Participants
-                    {% endif %}
-                  </div>
-
-                  <div class="col-md-6 pull-right">
-                  <a class="btn btn-default pull-right" href="/maximatch/experiment/{{ experiment.url }}" role="button">View details &raquo;</a>
-                  {% if is_researcher %}
-                    {% if user.id == experiment.researcher.user.id %}
-                      <a href="/maximatch/edit_experiment/{{ experiment.url }}" class="pull-right"><button type="button" class="btn btn-default">Edit</button></a>
-                    {% endif %}
-                  {% endif %}
+                </div>
+                <div class="row">
+                  <div class="col-md-12">
+                        <span class="glyphicon glyphicon-time" title="Duration"></span> {{ experiment.duration }}
+                        <span class="glyphicon glyphicon-gbp" title="Payment"></span> {{ experiment.payment_cash }}
+                        {% if is_researcher %}
+                        <span class="glyphicon glyphicon-user" title="Participants"></span> <a href="/maximatch/view_participants/{{ experiment.url }}" class="no-style">{{ experiment.num_participants }} / {{ experiment.participants_needed }}</a>
+                        {% else %}
+                        <span class="glyphicon glyphicon-user" title="Participants"></span> {{ experiment.num_participants }} / {{ experiment.participants_needed }}
+                        {% endif %}
+                        <a class="btn btn-default pull-right btn-primary" href="/maximatch/experiment/{{ experiment.url }}" role="button">View details &raquo;</a>
+                        {% if is_researcher %}
+                          {% if user.id == experiment.researcher.user.id %}
+                            <a href="/maximatch/edit_experiment/{{ experiment.url }}" class="pull-right"><button type="button" class="btn btn-primary">Edit</button></a>
+                          {% endif %}
+                        {% endif %}
                   </div>
                 </div>
+              </div>
             {% endfor %}        
 
     {% else %}
