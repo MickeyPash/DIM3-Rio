@@ -10,10 +10,7 @@ urlpatterns = patterns('',
     # url(r'^blog/', include('blog.urls')),
 
     url(r'^', include('maximatch.urls')), 
-<<<<<<< HEAD
-=======
-    url(r'^maximatch/', include('maximatch.urls')), 
->>>>>>> 77ebf8de27e4a1cc2214868b7542fb7b1248ff96
+    #url(r'^maximatch/', include('maximatch.urls')), 
     url(r'^admin/', include(admin.site.urls)),
 )
 
