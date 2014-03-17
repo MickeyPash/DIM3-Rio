@@ -25,7 +25,7 @@ DEBUG = False
 
 TEMPLATE_DEBUG = False
 
-ALLOWED_HOSTS = ['dim.mickeypashov.com','127.0.0.1', 'localhost']
+ALLOWED_HOSTS = ['dim.mickeypashov.com', '127.0.0.1', 'localhost']
 
 
 # Application definition
@@ -38,7 +38,7 @@ INSTALLED_APPS = (
     'django.contrib.staticfiles',
     'django.contrib.admin',
     'django.contrib.admindocs',
-    'debug_toolbar',
+    #'debug_toolbar',
     'bootstrap3',
     'maximatch',
 )
@@ -75,7 +75,7 @@ TEMPLATE_DIRS = (
 MEDIA_URL = '/media/'
 MEDIA_ROOT = os.path.join(PROJECT_PATH, 'media') # Absolute path to the media directory
 
-LOGIN_URL = '/maximatch/login'
+LOGIN_URL = '/login'
 
 
 # Database
