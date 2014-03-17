@@ -1,0 +1,27 @@
+{% extends 'maximatch/base.html' %}
+
+{% block title %}Register{% endblock %}
+
+{% block body_block %}
+
+    <div class="page-header">
+        <h1>Register</h1>
+    </div>
+
+    {% if registered %}
+        <strong>Thank you for registering!</strong>
+        <a href="/maximatch/">Return to the homepage.</a><br />
+    {% else %}
+
+        <form id="user_form" method="post" action="/maximatch/register_participant/" class="form col-md-5 col-md-offset-3">
+
+            {% csrf_token %}
+            {% load bootstrap3 %}
+            {% bootstrap_form user_form %}
+            {% bootstrap_form participant_form %}
+
+            <input type="submit" name="submit" value="Register" class="btn btn-primary pull-right"/>
+        </form>
+    {% endif %}
+
+{% endblock %}

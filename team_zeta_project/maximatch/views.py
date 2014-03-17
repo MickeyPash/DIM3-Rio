@@ -287,6 +287,11 @@ def view_participants(request, experiment_title_url=None):
 
 def register(request):
     context = RequestContext(request)
+    return render_to_response('maximatch/register.html', {}, context)
+
+
+def register_participant(request):
+    context = RequestContext(request)
 
     registered = False
 
@@ -323,8 +328,52 @@ def register(request):
         user_form = UserForm()
         participant_form = ParticipantForm()
 
-    return render_to_response('maximatch/register.html', {
+    return render_to_response('maximatch/register_participant.html', {
         'user_form': user_form, 'participant_form': participant_form,
+        'registered': registered},
+        context)
+
+
+def register_researcher(request):
+    context = RequestContext(request)
+
+    registered = False
+
+    if request.method == 'POST':
+        user_form = UserForm(data=request.POST)
+        researcher_form = ResearcherForm(data=request.POST)
+
+        # If the two forms are valid...
+        if user_form.is_valid() and researcher_form.is_valid():
+            user = user_form.save()
+
+            # Once hashed, update the user object.
+            user.set_password(user.password)
+            user.save()
+
+            # Delays saving model until we're ready avoiding integrity issues
+            participant = researcher_form.save(commit=False)
+            participant.user = user
+
+            participant.save()
+
+            # Tell the template registration was successful
+            registered = True
+
+            user.password = user_form.cleaned_data['password']
+            user = authenticate(username=user.username, password=user.password)
+            login(request, user)
+            return HttpResponseRedirect("/maximatch/")
+
+        else:
+            print user_form.errors, researcher_form.errors
+
+    else:
+        user_form = UserForm()
+        researcher_form = ResearcherForm()
+
+    return render_to_response('maximatch/register_researcher.html', {
+        'user_form': user_form, 'researcher_form': researcher_form,
         'registered': registered},
         context)
 

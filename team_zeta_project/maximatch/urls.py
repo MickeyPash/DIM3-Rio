@@ -29,6 +29,8 @@ urlpatterns = patterns('',
                        url(r'^settings/$', views.settings, name='register'),
                        url(r'^restricted/$', views.restricted, name='restricted'),
                        url(r'^register/$', views.register, name='register'),
+                       url(r'^register_participant/$', views.register_participant, name='register_participant'),
+                       url(r'^register_researcher/$', views.register_researcher, name='register_researcher'),
                        url(r'^login/$', views.user_login, name='login'),
                        url(r'^logout/$', views.user_logout, name='logout'),
                 )
