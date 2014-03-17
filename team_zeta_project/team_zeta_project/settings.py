@@ -21,9 +21,9 @@ BASE_DIR = os.path.dirname(os.path.dirname(__file__))
 SECRET_KEY = '%@q0qx5*qe+mlhoq8thc!39#qekt11p96tkpc49!9xt6y^josd'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = False
+DEBUG = True
 
-TEMPLATE_DEBUG = False
+TEMPLATE_DEBUG = True
 
 ALLOWED_HOSTS = ['dim.mickeypashov.com', '127.0.0.1', 'localhost']
 
@@ -38,7 +38,7 @@ INSTALLED_APPS = (
     'django.contrib.staticfiles',
     'django.contrib.admin',
     'django.contrib.admindocs',
-    #'debug_toolbar',
+    'debug_toolbar',
     'bootstrap3',
     'maximatch',
 )
