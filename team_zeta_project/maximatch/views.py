@@ -1,4 +1,3 @@
-from django.shortcuts import render
 from django.template import RequestContext
 from django.shortcuts import render_to_response
 from maximatch.models import Experiment, Participant, Researcher, Application
@@ -6,23 +5,27 @@ from django.contrib.auth.models import User
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth import logout, authenticate, login
 from django.http import HttpResponseRedirect, HttpResponse
-from maximatch.forms import ExperimentForm, ParticipantForm, UserForm, ResearcherForm, ParticipantFullForm, ApplicationForm
+from maximatch.forms import ExperimentForm, ParticipantForm, UserForm, \
+    ResearcherForm, ParticipantFullForm, ApplicationForm
 
 # Create your views here.
+
 
 def encode_url(url):
     # Change underscores in the category name to spaces.
     return url.replace(' ', '_')
 
+
 def decode_url(url):
     return url.replace('_', ' ')
+
 
 def is_researcher(user_id=None):
     try:
         # If we can't find, the .get() method raises a DoesNotExist exception.
         user = User.objects.get(id=user_id)
         try:
-            researcher = Researcher.objects.get(user=user)
+            Researcher.objects.get(user=user)
             return True
         except Researcher.DoesNotExist:
             pass
@@ -30,12 +33,14 @@ def is_researcher(user_id=None):
         pass
     return False
 
+
 def count_participants(experiment=None):
     try:
         num = Application.objects.filter(experiment=experiment).count()
     except:
         num = 0
     return num
+
 
 def index(request):
     context = RequestContext(request)
@@ -53,9 +58,11 @@ def index(request):
 
     return render_to_response('maximatch/index.html', context_dict, context)
 
+
 def restricted(request):
     context = RequestContext(request)
     return render_to_response('maximatch/restricted.html', {}, context)
+
 
 def experiment(request, experiment_title_url):
     context = RequestContext(request)
@@ -80,15 +87,18 @@ def experiment(request, experiment_title_url):
         try:
             user = User.objects.get(id=request.user.id)
             participant = Participant.objects.get(user=user)
-            application = Application.objects.get(participant=participant, experiment=experiment)
+            Application.objects.get(participant=participant,
+                                    experiment=experiment)
             applied = True
-        except (Application.DoesNotExist, Participant.DoesNotExist, User.DoesNotExist):
+        except (Application.DoesNotExist, Participant.DoesNotExist,
+                User.DoesNotExist):
             applied = False
-
 
     context_dict['applied'] = applied
 
-    return render_to_response('maximatch/experiment.html', context_dict, context)
+    return render_to_response('maximatch/experiment.html', context_dict,
+                              context)
+
 
 @login_required
 def add_experiment(request):
@@ -105,13 +115,17 @@ def add_experiment(request):
 
             return index(request)
         else:
-            # The supplied form contained errors - just print them to the terminal.
+            # The supplied form contained errors - print them to the terminal.
             print form.errors
     else:
         # If the request was not a POST, display the form to enter details.
         form = ExperimentForm()
 
-    return render_to_response('maximatch/add_experiment.html', {'form': form}, context)
+    context_dict = {'form': form}
+
+    return render_to_response('maximatch/add_experiment.html', context_dict,
+                              context)
+
 
 @login_required
 def edit_experiment(request, experiment_title_url=None):
@@ -132,7 +146,8 @@ def edit_experiment(request, experiment_title_url=None):
 
     except Experiment.DoesNotExist:
         # We get here if we didn't find the specified experiment.
-        return render_to_response('maximatch/edit_experiment.html', context_dict, context)
+        return render_to_response('maximatch/edit_experiment.html',
+                                  context_dict, context)
 
     if request.POST:
         form = ExperimentForm(request.POST, instance=experiment)
@@ -140,7 +155,8 @@ def edit_experiment(request, experiment_title_url=None):
             form.save()
 
             # If the save was successful, redirect to the details page
-            return HttpResponseRedirect('/maximatch/experiment/' + encode_url(form.cleaned_data['title']))
+            encoded_url = encode_url(form.cleaned_data['title'])
+            return HttpResponseRedirect('/maximatch/experiment/' + encoded_url)
 
         else:
             print form.errors
@@ -150,7 +166,8 @@ def edit_experiment(request, experiment_title_url=None):
 
     context_dict['form'] = form
 
-    return render_to_response('maximatch/edit_experiment.html', context_dict, context)
+    return render_to_response('maximatch/edit_experiment.html', context_dict,
+                              context)
 
 
 @login_required
@@ -159,39 +176,47 @@ def apply_experiment(request, experiment_title_url=None):
     success = False
     context_dict = {'success': success}
 
-    context = RequestContext(request)
     user_id = request.user.id
 
     try:
         user = User.objects.get(id=user_id)
-        experiment = Experiment.objects.get(title=decode_url(experiment_title_url))
+        decoded_url = decode_url(experiment_title_url)
+        experiment = Experiment.objects.get(title=decoded_url)
         experiment.url = encode_url(experiment.title)
         participant = Participant.objects.get(user=user)
-    except (Experiment.DoesNotExist, User.DoesNotExist, Participant.DoesNotExist):
-        context_dict['error_message'] = 'Participant or experiment does not exist.'
-        return HttpResponseRedirect('/maximatch/experiment/%s/'%experiment.url)
+    except (Experiment.DoesNotExist, User.DoesNotExist,
+            Participant.DoesNotExist):
+        context_dict['error_message'] = 'Participant or experiment does not '\
+                                        'exist.'
+        return HttpResponseRedirect('/maximatch/experiment/%s/' %
+                                    experiment.url)
 
     try:
-        application = Application.objects.get(participant=participant, experiment=experiment)
-        context_dict['error_message'] = 'You have already applied to this experiment.'
+        application = Application.objects.get(participant=participant,
+                                              experiment=experiment)
+        context_dict['error_message'] = 'You have already applied to this '\
+                                        'experiment.'
         context_dict['applied'] = True
 
-        return HttpResponseRedirect('/maximatch/experiment/%s/'%experiment.url)
+        return HttpResponseRedirect('/maximatch/experiment/%s/' %
+                                    experiment.url)
 
     except Application.DoesNotExist:
         pass
 
-    application = Application(participant=participant, experiment=experiment, status='Waiting for confirmation')
+    application = Application(participant=participant, experiment=experiment,
+                              status='Waiting for confirmation')
     application.save()
 
     success = True
     context_dict = {'success': success}
 
-    return HttpResponseRedirect('/maximatch/experiment/%s/'%experiment.url)
+    return HttpResponseRedirect('/maximatch/experiment/%s/' % experiment.url)
+
 
 @login_required
 def update_application_status(request):
-    context = RequestContext(request)
+
     application_id = None
     response = False
     if request.method == 'POST':
@@ -206,6 +231,7 @@ def update_application_status(request):
             response = True
 
     return HttpResponse(response)
+
 
 @login_required
 def view_participants(request, experiment_title_url=None):
@@ -234,7 +260,8 @@ def view_participants(request, experiment_title_url=None):
         applications = None
         context_dict['error_message'] = 'Experiment does not exist'
 
-    return render_to_response('maximatch/view_participants.html', context_dict, context)
+    return render_to_response('maximatch/view_participants.html', context_dict,
+                              context)
 
     if request.POST:
         form = ExperimentForm(request.POST, instance=experiment)
@@ -242,7 +269,8 @@ def view_participants(request, experiment_title_url=None):
             form.save()
 
             # If the save was successful, redirect to the details page
-            return HttpResponseRedirect('/maximatch/experiment/' + encode_url(form.cleaned_data['title']))
+            encoded_url = encode_url(form.cleaned_data['title'])
+            return HttpResponseRedirect('/maximatch/experiment/' + encoded_url)
 
         else:
             print form.errors
@@ -252,7 +280,9 @@ def view_participants(request, experiment_title_url=None):
 
     context_dict['form'] = form
 
-    return render_to_response('maximatch/view_participants.html', context_dict, context)
+    return render_to_response('maximatch/view_participants.html', context_dict,
+                              context)
+
 
 def register(request):
     context = RequestContext(request)
@@ -271,13 +301,13 @@ def register(request):
             user.set_password(user.password)
             user.save()
 
-            # This delays saving the model until we're ready to avoid integrity problems.
+            # Delays saving model until we're ready avoiding integrity issues
             participant = participant_form.save(commit=False)
             participant.user = user
 
             participant.save()
 
-            # Update our variable to tell the template registration was successful.
+            # Tell the template registration was successful
             registered = True
 
             user.password = user_form.cleaned_data['password']
@@ -292,13 +322,11 @@ def register(request):
         user_form = UserForm()
         participant_form = ParticipantForm()
 
-    return render_to_response(
-            'maximatch/register.html', {
-                        'user_form': user_form, 
-                        'participant_form': participant_form, 
-                        'registered': registered
-                    },
-                    context)
+    return render_to_response('maximatch/register.html', {
+        'user_form': user_form, 'participant_form': participant_form,
+        'registered': registered},
+        context)
+
 
 def user_login(request):
     context = RequestContext(request)
@@ -312,7 +340,7 @@ def user_login(request):
         user = authenticate(username=username, password=password)
 
         # If we have a User object, the details are correct.
-        # If None (Python's way of representing the absence of a value), no user
+        # If None, no user
         # with matching credentials was found.
         if user is not None:
             if user.is_active:
@@ -321,16 +349,20 @@ def user_login(request):
                 return HttpResponseRedirect('/maximatch/')
 
             else:
-                context_dict = { 'error_message': 'Your Maxi-Match account is disabled.'}
-                return render_to_response('maximatch/login.html', context_dict, context)
+                context_dict = {'error_message': 'Your Maxi-Match account ' +
+                                'is disabled.'}
+                return render_to_response('maximatch/login.html', context_dict,
+                                          context)
 
         else:
             # Bad login details were provided. So we can't log the user in.
-            context_dict = { 'error_message': 'Invalid login details supplied.'}
-            return render_to_response('maximatch/login.html', context_dict, context)
+            context_dict = {'error_message': 'Invalid login details supplied.'}
+            return render_to_response('maximatch/login.html', context_dict,
+                                      context)
 
     else:
         return render_to_response('maximatch/login.html', {}, context)
+
 
 @login_required
 def user_logout(request):
@@ -338,6 +370,7 @@ def user_logout(request):
     logout(request)
 
     return HttpResponseRedirect('/maximatch/')
+
 
 @login_required
 def settings(request):
@@ -363,13 +396,15 @@ def settings(request):
             researcher = None
 
     except User.DoesNotExist:
-        return render_to_response('maximatch/settings.html', context_dict, context)
+        return render_to_response('maximatch/settings.html', context_dict,
+                                  context)
 
     if participant is None:
         # Handling the case that the user is not a participant but a researcher
         if request.POST:
             user_form = UserForm(data=request.POST, instance=user)
-            researcher_form = ResearcherForm(data=request.POST, instance=researcher)
+            researcher_form = ResearcherForm(data=request.POST,
+                                             instance=researcher)
             if user_form.is_valid() and researcher_form.is_valid():
 
                 user = user_form.save()
@@ -383,12 +418,13 @@ def settings(request):
                 researcher.save()
 
                 updated = True
-                
+
                 context_dict['updated'] = updated
                 context_dict['user_form'] = user_form
                 context_dict['researcher_form'] = researcher_form
 
-                return render_to_response('maximatch/settings.html', context_dict, context)
+                return render_to_response('maximatch/settings.html',
+                                          context_dict, context)
 
             else:
                 print user_form.errors, researcher_form.errors
@@ -401,12 +437,14 @@ def settings(request):
         context_dict['researcher_form'] = researcher_form
         context_dict['updated'] = updated
 
-        return render_to_response('maximatch/settings.html', context_dict, context)
+        return render_to_response('maximatch/settings.html', context_dict,
+                                  context)
 
     elif researcher is None:
         if request.POST:
             user_form = UserForm(data=request.POST, instance=user)
-            participant_form = ParticipantFullForm(data=request.POST, instance=participant)
+            participant_form = ParticipantFullForm(data=request.POST,
+                                                   instance=participant)
             if user_form.is_valid() and participant_form.is_valid():
 
                 user = user_form.save()
@@ -425,7 +463,8 @@ def settings(request):
                 context_dict['user_form'] = user_form
                 context_dict['participant_form'] = participant_form
 
-                return render_to_response('maximatch/settings.html', context_dict, context)
+                return render_to_response('maximatch/settings.html',
+                                          context_dict, context)
 
             else:
                 print user_form.errors, participant_form.errors
@@ -438,4 +477,5 @@ def settings(request):
         context_dict['participant_form'] = participant_form
         context_dict['updated'] = updated
 
-        return render_to_response('maximatch/settings.html', context_dict, context)
+        return render_to_response('maximatch/settings.html', context_dict,
+                                  context)
