@@ -4,10 +4,10 @@ from django.contrib.auth.models import User
 from django.forms.extras.widgets import SelectDateWidget
 
 class ExperimentForm(forms.ModelForm):
-    title = models.TextField(max_length=45)
-    short_description = models.TextField(max_length=256, blank=False)
-    description = models.TextField(max_length=1024, widget=forms.Textarea)
-    participants_needed = models.IntegerField()
+    title = forms.CharField(max_length=45)
+    short_description = forms.CharField(max_length=256)
+    description = forms.CharField(max_length=1024, widget=forms.Textarea)
+    participants_needed = forms.IntegerField()
     participants_needed = forms.IntegerField()
     status = forms.ChoiceField(choices=Experiment.STATUS_CHOICES)
     location = forms.CharField(max_length=128)
