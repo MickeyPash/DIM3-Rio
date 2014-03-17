@@ -374,6 +374,25 @@ def user_logout(request):
 
 
 @login_required
+def previous_experiments(request):
+
+    context = RequestContext(request)
+
+    user = Participant.objects.get(user=request.user)
+    print user.id
+    #application_list = Application.objects.all()
+    application_list = Application.objects.filter(participant=user)
+    context_dict = {}
+
+    for application in application_list:
+        application.experiment.url = encode_url(application.experiment.title)
+
+    context_dict['application_list'] = application_list
+
+    return render_to_response('maximatch/previous_experiments.html', context_dict, context)
+
+
+@login_required
 def settings(request):
     context = RequestContext(request)
 
@@ -381,6 +400,8 @@ def settings(request):
     updated = False
 
     context_dict = {'user_id': user_id}
+    if is_researcher(request.user.id):
+        context_dict['is_researcher'] = True
 
     try:
         user = User.objects.get(id=user_id)

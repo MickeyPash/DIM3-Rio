@@ -33,6 +33,14 @@
         </form>
     </div>
 
+    {% if not is_researcher %}
+    <div class="row">
+        <div class="col-md-12">
+            <p><a href="/maximatch/previous_experiments">See experiments I have applied for</a></p>
+        </div>
+    </div>
+    {% endif %}
+
     <br />
     <div class="row">
         <div class="col-md-12">

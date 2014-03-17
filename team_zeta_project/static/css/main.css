@@ -130,7 +130,6 @@ a.no-style:hover, a.no-style:visited, a.no-style:link, a.no-style:active {
 }
 
 .container .short-description{
-  line-height: 85px;
   min-height: 85px;
 }
 .container h2{
@@ -145,7 +144,7 @@ form[id^="form-application-"] button[type="submit"] {
   opacity: 0;
 }
 
-body{
+body, .navbar-brand, .dropdown-menu>li>a, .dropdown-menu>li>a{
   font-size: 115%;
 }
 .btn, a.btn{
