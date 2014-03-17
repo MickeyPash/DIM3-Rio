@@ -129,6 +129,13 @@ a.no-style:hover, a.no-style:visited, a.no-style:link, a.no-style:active {
   text-transform: none !important;
 }
 
+.index .col-md-6{
+  width: 48%;
+  margin-left: 0.5%;
+  margin-right: 0.5%;
+  margin-bottom: 10px;
+}
+
 .container .short-description{
   min-height: 85px;
 }

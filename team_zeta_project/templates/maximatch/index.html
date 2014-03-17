@@ -9,6 +9,7 @@
 
     {% if experiments %}
 
+          <div class="index">
             {% for experiment in experiments %}
               <div class="col-md-6 well">
                 <div class="row">
@@ -36,6 +37,7 @@
                 </div>
               </div>
             {% endfor %}        
+          </div>
 
     {% else %}
         <strong>Sorry, there are no open experiments at the moment.</strong>
