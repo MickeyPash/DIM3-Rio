@@ -42,9 +42,9 @@
         {% for application in application_list %}
           <tr>
             <td>{{ forloop.counter }}</td>
-            <td><a href="/experiment/{{ experiment.url }}" class="no-style">{{ application.experiment.title }}</a></td>
+            <td><a href="/experiment/{{ application.experiment.url }}" class="no-style">{{ application.experiment.title }}</a></td>
             <td>{{ application.experiment.published }}</td>
-            <td><a href="/view_participants/{{ experiment.url }}" class="no-style">{{ application.experiment.num_participants }} / {{ application.experiment.participants_needed }}</a></td>
+            <td><a href="/view_participants/{{ application.experiment.url }}" class="no-style">{{ application.experiment.num_participants }} / {{ application.experiment.participants_needed }}</a></td>
             <td>{{ application.applied_on }}</td>
             <td>{{ application.experiment.status }}</td>
       </td>
