@@ -24,8 +24,8 @@
             <td>{{ forloop.counter }}</td>
             <td><a href="/experiment/{{ application.experiment.url }}" class="no-style">{{ application.experiment.title }}</a></td>
             <td>{{ application.experiment.researcher.user.first_name }}</td>
-            <td>{{ application.exeriment.status }}</td>
             <td>{{ application.status }}</td>
+            <td>{{ application.experiment.status }}</td>
           </tr>
         {% endfor %}
       </table>
