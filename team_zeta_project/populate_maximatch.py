@@ -1,4 +1,5 @@
 import os
+from datetime import datetime
 
 # Definig population script
 def populate():
@@ -183,7 +184,7 @@ def add_experiment(title, short_description, description, participants_needed, s
     return e
 
 def add_application(participant, experiment, status):
-    a = Application.objects.get_or_create(participant = participant, experiment = experiment, status = status)[0]
+    a = Application.objects.get_or_create(participant = participant, experiment = experiment, status = status, applied_on = datetime.now())[0]
     return a
 
 # Start execution here!

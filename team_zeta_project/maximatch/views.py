@@ -154,9 +154,14 @@ def edit_experiment(request, experiment_title_url=None):
     if request.POST:
         form = ExperimentForm(request.POST, instance=experiment)
         if form.is_valid():
-            if form.cleaned_data['status'] == 'Open to applicants' and \
-                    experiment.status != 'Open to applicants':
+
+            if form.cleaned_data['status'] == 'Open to applicants':
+                print datetime.now()
                 form.cleaned_data['published'] = datetime.now()
+
+            elif form.cleaned_data['status'] == 'Closed':
+                print 'None'
+                form.cleaned_data['published'] = None
 
             form.save()
 
@@ -218,6 +223,7 @@ def apply_experiment(request, experiment_title_url=None):
 
     application = Application(participant=participant, experiment=experiment,
                               status='Waiting for confirmation')
+    application.applied_on = datetime.now()
     application.save()
 
     success = True
@@ -239,11 +245,17 @@ def user_details(request, username=None):
     try:
         user_info = User.objects.get(username=username)
         participant = Participant.objects.get(user=user_info)
+        application_list = Application.objects.filter(participant=participant)
+
+        for application in application_list:
+            application.experiment.url = encode_url(application.experiment.title)
+            application.experiment.num_participants = count_participants(application.experiment)
     except (User.DoesNotExist, Participant.DoesNotExist):
         context_dict['error_message'] = 'Participant does not exist.'
         participant = None
 
     context_dict['participant'] = participant
+    context_dict['application_list'] = application_list
 
     return render_to_response('maximatch/user_details.html',
                               context_dict, context)

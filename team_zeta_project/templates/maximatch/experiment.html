@@ -31,7 +31,6 @@
                 <strong>Researcher:</strong> {{ experiment.researcher.user.first_name }} {{ experiment.researcher.user.last_name }} - ({{ experiment.researcher.user.email }}) </p>
 
                 {% if user.id|is_researcher %}
-                <p><strong>Researcher:</strong> {{ experiment.researcher.user.first_name }} {{ experiment.researcher.user.last_name }}</p>
                 <p><strong>Published on: </strong>{{ experiment.published }}</p>
                 <p><strong>Start date: </strong>{{ experiment.start_date }}</p>
                 <p><strong>End date: </strong>{{ experiment.end_date }}</p>

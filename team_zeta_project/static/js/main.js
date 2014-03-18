@@ -1,3 +1,7 @@
+$(document).ready(function(){ 
+        $(".table").tablesorter(); 
+}); 
+
 
 $('form[id^="form-application-"] select').change(function () {
     var button = $(this).parent().parent().find('button');

@@ -20,6 +20,7 @@
             <th>First Name</th>
             <th>Email</th>
             <th>Mob. Phone</th>
+            <th>Applied on</th>
             <th>Status</th>
           </tr>
         </thead>
@@ -30,10 +31,11 @@
             <td><a href="/user_details/{{ application.participant.user.username }}" class="no-style">{{ application.participant.user.first_name }}</a></td>
             <td>{{ application.participant.user.email }}</td>
             <td>{{ application.participant.mobile_phone }}</td>
+            <td>{{ application.applied_on }}</td>
             <td>
               <form id="form-application-{{ application.id }}" class="" method="post" action="/maximatch/update_application_status/">
                 {% csrf_token %}
-                <div class="col-xs-6">
+                <div class="col-xs-8">
                   <select class="form-control" name="status">
                     {% for choice in update_application_form.choices %}
                       <option {% if choice.0 == application.status %}selected{% endif %} value="{{choice.0}}"/>{{choice.1}}</option>

@@ -86,6 +86,7 @@ class Application(models.Model):
     )
     participant = models.ForeignKey(Participant)
     experiment = models.ForeignKey(Experiment)
+    applied_on = models.DateTimeField()
     status = models.CharField(max_length=25, choices=STATUS_CHOICES)
 
     def __unicode__(self):
