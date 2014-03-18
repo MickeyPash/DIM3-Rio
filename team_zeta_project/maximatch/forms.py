@@ -64,12 +64,23 @@ class UserForm(forms.ModelForm):
 
 
 class ParticipantForm(forms.ModelForm):
+
     class Meta:
         model = Participant
-        fields = ()
+        fields = ('date_of_birth',)
 
 
 class ParticipantFullForm(forms.ModelForm):
+    date_of_birth = forms.DateField(widget=SelectDateWidget(years=range(1920, 2014)))
+    matriculation_id = forms.CharField(required=False, max_length=7)
+    nationality = forms.ChoiceField(choices=Participant.NATIONALITY_CHOICES, required=False)
+    mobile_number = forms.CharField(max_length=11, required=False)
+    telephone_number = forms.CharField(max_length=11, required=False)
+    gender = forms.ChoiceField(choices=Participant.GENDER_CHOICES, required=False)
+    first_language = forms.ChoiceField(choices=Participant.FIRST_LANGUAGE_CHOICES, required=False)
+    education_level = forms.ChoiceField(choices=Participant.EDUCATION_LEVEL_CHOICES, required=False)
+
+
     class Meta:
         model = Participant
         fields = ('matriculation_id', 'nationality', 'date_of_birth',

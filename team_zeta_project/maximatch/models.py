@@ -37,16 +37,16 @@ class Participant(models.Model):
         ('High school', 'High school'),
         ('Bachelor', 'Bachelor'),
     )
-    matriculation_id = models.CharField(max_length=7)
-    mobile_number = models.CharField(max_length=11)
-    telephone_number = models.CharField(max_length=11)
-    nationality = models.CharField(max_length=2, choices=NATIONALITY_CHOICES)
-    date_of_birth = models.DateField(null=True)
-    gender = models.CharField(max_length=1, choices=GENDER_CHOICES)
+    matriculation_id = models.CharField(max_length=7, blank=True)
+    mobile_number = models.CharField(max_length=11, blank=True)
+    telephone_number = models.CharField(max_length=11, blank=True)
+    nationality = models.CharField(max_length=2, choices=NATIONALITY_CHOICES, blank=True)
+    date_of_birth = models.DateField(null=True, blank=True)
+    gender = models.CharField(max_length=1, choices=GENDER_CHOICES, blank=True)
     first_language = models.CharField(max_length=45,
-                                      choices=FIRST_LANGUAGE_CHOICES)
+                                      choices=FIRST_LANGUAGE_CHOICES, blank=True)
     education_level = models.CharField(max_length=45,
-                                       choices=EDUCATION_LEVEL_CHOICES)
+                                       choices=EDUCATION_LEVEL_CHOICES, blank=True)
     user = models.OneToOneField(User)
 
     def __unicode__(self):
