@@ -1,5 +1,4 @@
-Django==1.6.1
-PIL==1.1.7
+Django==1.6.2
 distribute==0.7.3
 flake8==2.1.0
 mccabe==0.2.1

@@ -192,6 +192,12 @@ def apply_experiment(request, experiment_title_url=None):
         return HttpResponseRedirect('/maximatch/experiment/%s/' %
                                     experiment.url)
 
+    if experiment.status != 'Open to applicants':
+        context_dict['applied'] = False
+
+        context_dict['error_message'] = 'This experiment is not open to applicants.'
+        return HttpResponseRedirect('/maximatch/experiment/%s/' % experiment.url)
+
     try:
         application = Application.objects.get(participant=participant,
                                               experiment=experiment)
