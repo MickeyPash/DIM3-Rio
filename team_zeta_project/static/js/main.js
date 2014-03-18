@@ -2,6 +2,9 @@
 $('form[id^="form-application-"] select').change(function () {
     var button = $(this).parent().parent().find('button');
     button.css({opacity:1});
+    //button.removeClass('btn-info');
+    //button.addClass('btn-success');
+    button.html('Update');
 });
 
 $('form[id^="form-application-"]').on('submit', function(event){
@@ -16,8 +19,10 @@ $('form[id^="form-application-"]').on('submit', function(event){
            data: $(this).serialize(), // serializes the form's elements.
            success: function(data)
            {
-               button.animate({opacity:0});
-                
+                //button.removeClass('btn-success');
+                //button.addClass('btn-info');
+                button.animate({opacity:0});
+                button.html('Updated');
            }
          });
 

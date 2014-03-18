@@ -11,40 +11,48 @@
     
     <br>
 
-    <table class="table table-striped table-condensed">
-      <thead>
-        <tr>
-          <th>#</th>
-          <th>First Name</th>
-          <th>Email</th>
-          <th>Mob. Phone</th>
-          <th>Status</th>
-        </tr>
-      </thead>
-      <tbody>
-      {% for application in applications %}
-        <tr>
-          <td>{{ forloop.counter }}</td>
-          <td>{{ application.participant.user.first_name }}</td>
-          <td>{{ application.participant.user.email }}</td>
-          <td>{{ application.participant.mobile_phone }}</td>
-          <td>
-            <form id="form-application-{{ application.id }}" class="" method="post" action="/maximatch/update_application_status/">
-              {% csrf_token %}
-              <div class="col-xs-6">
-                <select class="form-control" name="status">
-                  {% for choice in update_application_form.choices %}
-                    <option {% if choice.0 == application.status %}selected{% endif %} value="{{choice.0}}"/>{{choice.1}}</option>
-                  {% endfor %}
-                </select>
-              </div>
-              <input type="hidden" class="input" name="application_id" value="{{ application.id }}"/>
-              <button class="btn btn-mini btn-success" type="submit">Update</button>
-            </form>
-    </td>
-        </tr>
-      {% endfor %}
-    </table>
+    {% if applications %}
+
+      <table class="table table-striped table-condensed">
+        <thead>
+          <tr>
+            <th>#</th>
+            <th>First Name</th>
+            <th>Email</th>
+            <th>Mob. Phone</th>
+            <th>Status</th>
+          </tr>
+        </thead>
+        <tbody>
+        {% for application in applications %}
+          <tr>
+            <td>{{ forloop.counter }}</td>
+            <td><a href="/user_details/{{ application.participant.user.username }}" class="no-style">{{ application.participant.user.first_name }}</a></td>
+            <td>{{ application.participant.user.email }}</td>
+            <td>{{ application.participant.mobile_phone }}</td>
+            <td>
+              <form id="form-application-{{ application.id }}" class="" method="post" action="/maximatch/update_application_status/">
+                {% csrf_token %}
+                <div class="col-xs-6">
+                  <select class="form-control" name="status">
+                    {% for choice in update_application_form.choices %}
+                      <option {% if choice.0 == application.status %}selected{% endif %} value="{{choice.0}}"/>{{choice.1}}</option>
+                    {% endfor %}
+                  </select>
+                </div>
+                <input type="hidden" class="input" name="application_id" value="{{ application.id }}"/>
+                <button class="btn btn-mini btn-success" type="submit">Update</button>
+              </form>
+      </td>
+          </tr>
+        {% endfor %}
+      </table>
+    {% else %}
+        <div class="alert alert-warning">
+          No participants have applied yet.
+          <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>    
+        </div>
+    {% endif %}
     {% endif %}
 
     <p><a class="btn btn-default" href="/maximatch/experiment/{{ experiment.url }}" role="button">&laquo; Experiment details</a></p>

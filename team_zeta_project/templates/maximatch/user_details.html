@@ -1,0 +1,36 @@
+{% extends 'maximatch/base.html' %}
+
+{% load maximatch_extras %}
+
+{% block title %}View user{% endblock %}
+
+{% block body_block %}
+
+    <div class="page-header">
+      <h1>User</h1>
+    </div>
+
+    <div class="col-md-12">
+        {% if participant %}
+                <p><strong>Username: </strong>{{ participant.user.username }}</a>
+                <p><strong>Name: </strong>{{ participant.user.first_name }} {{ participant.user.last_name }}</p>
+                <p><strong>Email: </strong>{{ participant.user.email }}</p>
+                <p><strong>Gender: </strong>{{ participant.gender }}</p>
+                <p><strong>Matriculation ID: </strong>{{ participant.matriculation_id }}</p>
+                <p><strong>Nationality: </strong>{{ participant.nationality }}</p>
+                <p><strong>Date of Birth: </strong>{{ participant.date_of_birth }}</p>
+                <p><strong>Mobile Number: </strong>{{ participant.mobile_number }}</p>
+                <p><strong>Telephone Number: </strong>{{ participant.telephone_number }}</p>
+                <p><strong>First language: </strong>{{ participant.first_language }}</p>
+                <p><strong>Education level: </strong>{{ participant.education_level }}</p>
+
+        {% else %}
+            <div class="alert alert-danger">
+            <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>    
+            {{ error_message }}
+            </div>
+        {% endif %}
+    </div>
+
+    <p><a href="/">&laquo; Experiment list</a></p>
+{% endblock %}

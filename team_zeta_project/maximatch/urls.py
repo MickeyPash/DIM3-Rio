@@ -33,4 +33,7 @@ urlpatterns = patterns('',
                        url(r'^register_researcher/$', views.register_researcher, name='register_researcher'),
                        url(r'^login/$', views.user_login, name='login'),
                        url(r'^logout/$', views.user_logout, name='logout'),
+                       url(r'^user_details/(?P<username>\w+)/$',
+                           views.user_details,
+                           name='user_details'),
                 )

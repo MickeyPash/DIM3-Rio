@@ -222,6 +222,32 @@ def apply_experiment(request, experiment_title_url=None):
 
 
 @login_required
+def user_details(request, username=None):
+
+    context = RequestContext(request)
+
+    context_dict = {'username': username}
+
+    if not is_researcher(request.user.id):
+        return restricted(request)
+
+    try:
+        user_info = User.objects.get(username=username)
+        participant = Participant.objects.get(user=user_info)
+    except (User.DoesNotExist, Participant.DoesNotExist):
+        context_dict['error_message'] = 'Participant does not exist.'
+        print 'error_message'
+        participant = None
+
+    context_dict['participant'] = participant
+
+    print participant
+
+    return render_to_response('maximatch/user_details.html',
+                              context_dict, context)
+
+
+@login_required
 def update_application_status(request):
 
     application_id = None

@@ -122,11 +122,10 @@ body {
   height: 200px;
 }
 
-a.no-style {
-  
-}
-a.no-style:hover, a.no-style:visited, a.no-style:link, a.no-style:active {
+
+a.no-style, a.no-style:hover, a.no-style:visited, a.no-style:link, a.no-style:active {
   text-transform: none !important;
+  text-decoration: none !important;
 }
 
 .index .col-md-6{
