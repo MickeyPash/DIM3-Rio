@@ -35,6 +35,86 @@ def is_researcher(user_id=None):
     return False
 
 
+def meet_requirements(experiment=None, participant=None):
+    nation = experiment.required_nationalities
+    language = experiment.required_first_language
+    edu = experiment.required_education_level
+    gender = experiment.required_gender
+
+    gender_meets = False
+    if gender:
+        for g in gender[0]:
+            print participant.gender
+            print g
+            if g == participant.gender:
+                gender_meets = True
+    else:
+        gender_meets = True
+
+    language_meets = False
+    if language:
+        for g in language[0]:
+            if g == participant.first_language:
+                language_meets = True
+    else:
+        language_meets = True
+
+    edu_meets = True
+    if edu:
+        for g in edu[0]:
+            if g == participant.education_level:
+                edu_meets = True
+    else:
+        edu_meets = True
+
+    nation_meets = False
+    if nation:
+        print ('British' in nation)
+        for g in nation[0]:
+            print g
+            print participant.nationality
+            if g == participant.nationality:
+                nation_meets = True
+    else:
+        nation_meets = True
+
+    return gender_meets and nation_meets and language_meets and edu_meets
+
+
+def prettify_requirements(experiment=None):
+    nation = experiment.required_nationalities
+    language = experiment.required_first_language
+    edu = experiment.required_education_level
+    gender = experiment.required_gender
+
+    if not nation[0] or len(nation[0]) < 1:
+        experiment.required_nationalities = None
+    elif len(nation) >= 1:
+        final = ''
+        for i in range(0, len(nation)):
+            final += Participant.NATIONALITY_CHOICES[i][1] + ','
+        experiment.required_nationalities = final
+
+    if not language or len(language) <= 1:
+        experiment.required_first_language = None
+
+    if not edu[0] or len(edu[0]) < 1:
+        experiment.required_education_level = None
+    elif len(edu[0]) >= 1:
+        final = ''
+        for i in range(0, len(edu)):
+            final += Participant.EDUCATION_LEVEL_CHOICES[i][1] + ','
+        experiment.required_education_level = final
+
+    if not gender[0] or len(gender[0]) < 1:
+        experiment.required_gender = None
+    else:
+        final = ''
+        for i in range(0, len(gender)):
+            final += Participant.GENDER_CHOICES[i][1] + ','
+        experiment.required_gender = final
+
+
 def count_participants(experiment=None):
     try:
         num = Application.objects.filter(experiment=experiment).count()
@@ -76,10 +156,9 @@ def experiment(request, experiment_title_url):
 
     try:
         experiment = Experiment.objects.get(title=experiment_title)
-
         experiment.url = encode_url(experiment.title)
         experiment.num_participants = count_participants(experiment)
-
+        prettify_requirements(experiment)
         context_dict['experiment'] = experiment
 
     except Experiment.DoesNotExist:

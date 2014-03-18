@@ -11,3 +11,4 @@ virtualenv-clone==0.2.4
 virtualenvwrapper==4.2
 wsgiref==0.1.2
 django-bootstrap3==3.1.0
+django-multiselectfield==0.1.1

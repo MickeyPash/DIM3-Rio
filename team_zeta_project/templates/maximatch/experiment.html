@@ -29,6 +29,22 @@
                 <p><strong>Exeperiment description:</strong><br>
                 {{ experiment.description }}</p>
                 <strong>Researcher:</strong> {{ experiment.researcher.user.first_name }} {{ experiment.researcher.user.last_name }} - ({{ experiment.researcher.user.email }}) </p>
+                {% if experiment.minimum_age %}
+                <p><strong>Minimum age:</strong> {{ experiment.minimum_age }}</p>
+                {% endif %}
+                {% if experiment.required_nationalities|length > 1 %}
+                <p><strong>Required nationalities:</strong> {% for g in experiment.required_nationalities %}{% if not forloop.last %} {{ g }}, {% endif %}{% endfor %}</p>
+                {% endif %}
+                {% if experiment.required_gender|length > 1 %}
+                <p><strong>Required gender:</strong> {% for g in experiment.required_gender %} {% if not forloop.last %} {{ g }}, {% endif %} {% endfor %} </p>
+                {% endif %}
+                {% if experiment.required_first_language %}
+                <p><strong>Required first language:</strong> {{ experiment.required_first_language }}</p>
+                {% endif %}
+                {% if experiment.required_education_level|length > 1 %}
+                <p><strong>Required education level:</strong> {% for g in experiment.required_education_level %}{% if not forloop.last %} {{ g }}, {% endif %} {% endfor %}</p>
+                {% endif %}
+                
 
                 {% if user.id|is_researcher %}
                 <p><strong>Published on: </strong>{{ experiment.published }}</p>
@@ -47,6 +63,7 @@
                 {% endif %}
             <br><br>
             {% elif user.id and not applied %}
+                {{ meet_requirements }}
                 <p><a class="btn btn-default" href="/apply_experiment/{{ experiment.url }}" role="button">Apply</a></p>
             {% elif user.id and applied %}
                 <p><a class="btn btn-default disabled" role="button">Applied</a></p>

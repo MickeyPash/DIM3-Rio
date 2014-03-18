@@ -1,5 +1,6 @@
 from django.db import models
 from django.contrib.auth.models import User
+from multiselectfield import MultiSelectField
 
 # Researcher - Participant - Experiment - Application
 
@@ -28,6 +29,7 @@ class Participant(models.Model):
         ('BG', 'Bulgarian'),
     )
     FIRST_LANGUAGE_CHOICES = (
+        ('Any', 'Any'),
         ('English', 'English'),
         ('Portuguese', 'Portuguese'),
     )
@@ -36,10 +38,10 @@ class Participant(models.Model):
         ('Bachelor', 'Bachelor'),
     )
     matriculation_id = models.CharField(max_length=7)
-    nationality = models.CharField(max_length=2, choices=NATIONALITY_CHOICES)
-    date_of_birth = models.DateField(null=True)
     mobile_number = models.CharField(max_length=11)
     telephone_number = models.CharField(max_length=11)
+    nationality = models.CharField(max_length=2, choices=NATIONALITY_CHOICES)
+    date_of_birth = models.DateField(null=True)
     gender = models.CharField(max_length=1, choices=GENDER_CHOICES)
     first_language = models.CharField(max_length=45,
                                       choices=FIRST_LANGUAGE_CHOICES)
@@ -72,6 +74,15 @@ class Experiment(models.Model):
     # Changed on server side
     published = models.DateTimeField(null=True, blank=False)
     researcher = models.ForeignKey(Researcher)
+    # Requirements for participants
+    required_nationalities = MultiSelectField(max_length=45, null=True, blank=True,
+                                       choices=Participant.NATIONALITY_CHOICES)
+    minimum_age = models.IntegerField(null=True, blank=True)
+    required_gender = MultiSelectField(null=True, blank=True, max_length=45,
+                                       choices=Participant.GENDER_CHOICES)
+    required_first_language = models.CharField(null=True, blank=True, max_length=45, choices=Participant.FIRST_LANGUAGE_CHOICES)
+    required_education_level = MultiSelectField(null=True, blank=True, max_length=45,
+                                       choices=Participant.EDUCATION_LEVEL_CHOICES)
 
     def __unicode__(self):
         return self.title
