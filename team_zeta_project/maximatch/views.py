@@ -7,6 +7,7 @@ from django.contrib.auth import logout, authenticate, login
 from django.http import HttpResponseRedirect, HttpResponse
 from maximatch.forms import ExperimentForm, ParticipantForm, UserForm, \
     ResearcherForm, ParticipantFullForm, ApplicationForm
+from datetime import datetime
 
 # Create your views here.
 
@@ -153,6 +154,10 @@ def edit_experiment(request, experiment_title_url=None):
     if request.POST:
         form = ExperimentForm(request.POST, instance=experiment)
         if form.is_valid():
+            if form.cleaned_data['status'] == 'Open to applicants' and \
+                    experiment.status != 'Open to applicants':
+                form.cleaned_data['published'] = datetime.now()
+
             form.save()
 
             # If the save was successful, redirect to the details page
@@ -236,12 +241,9 @@ def user_details(request, username=None):
         participant = Participant.objects.get(user=user_info)
     except (User.DoesNotExist, Participant.DoesNotExist):
         context_dict['error_message'] = 'Participant does not exist.'
-        print 'error_message'
         participant = None
 
     context_dict['participant'] = participant
-
-    print participant
 
     return render_to_response('maximatch/user_details.html',
                               context_dict, context)
@@ -460,8 +462,6 @@ def previous_experiments(request):
     context = RequestContext(request)
 
     user = Participant.objects.get(user=request.user)
-    print user.id
-    #application_list = Application.objects.all()
     application_list = Application.objects.filter(participant=user)
     context_dict = {}
 
@@ -471,6 +471,24 @@ def previous_experiments(request):
     context_dict['application_list'] = application_list
 
     return render_to_response('maximatch/previous_experiments.html', context_dict, context)
+
+
+@login_required
+def my_experiments(request):
+
+    context = RequestContext(request)
+    context_dict = {}
+
+    researcher = Researcher.objects.get(user=request.user)
+    experiment_list = Experiment.objects.filter(researcher=researcher)
+
+    for experiment in experiment_list:
+        experiment.url = encode_url(experiment.title)
+        experiment.num_participants = count_participants(experiment)
+
+    context_dict['experiment_list'] = experiment_list
+
+    return render_to_response('maximatch/my_experiments.html', context_dict, context)
 
 
 @login_required
