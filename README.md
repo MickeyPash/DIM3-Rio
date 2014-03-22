@@ -1,5 +1,7 @@
-DIM3-Rio
+DIM3 Team Zeta
 ========
+Application deployed at: http://brunomperes.pythonanywhere.com/
+
 
 #### Running virtualenv
 `source env/bin/activate`
